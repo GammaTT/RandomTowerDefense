@@ -10,10 +10,11 @@ public class EnemySpawner : MonoBehaviour
     private float SpawnDelay;
     private float LastSpawnTime;
 
-    private 
+    public List<Enemy> enemyList;
     // Start is called before the first frame update
     void Start()
     {
+        enemyList = new List<Enemy>();
         StartCoroutine("SpawnEnemy");
     }
 
@@ -30,8 +31,11 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)
         {
-            GameObject Enemy = Instantiate(Enemy01Prefab, transform.position, Quaternion.identity);
+            GameObject enemyObject = Instantiate(Enemy01Prefab, transform.position, Quaternion.identity);
+            Enemy enemy = enemyObject.GetComponent<Enemy>();
+            enemyList.Add(enemy);
             yield return new WaitForSeconds(SpawnDelay);
+            
             //break;
         }
     }

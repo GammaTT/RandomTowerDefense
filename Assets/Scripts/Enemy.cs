@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
         StopCoroutine("Move");
         StartCoroutine("Move");
 
-        Debug.Log(EnemyPath.Count);
+        //Debug.Log(EnemyPath.Count);
     }
 
     public IEnumerator Move()
