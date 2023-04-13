@@ -9,6 +9,12 @@ public class TowerSpawner : MonoBehaviour
     private Player player;
 
     [SerializeField]
+    private TowerData[] towerData;
+
+    [SerializeField]
+    private EnemySpawner enemySpawner;
+
+    [SerializeField]
     private GameObject TowerPrefab;
 
     [SerializeField]
@@ -37,6 +43,8 @@ public class TowerSpawner : MonoBehaviour
             if (MapDirector.Instance.WallMap.HasTile(tilePosition))
             {
                 GameObject Tower = Instantiate(TowerPrefab, transform.position, Quaternion.identity);
+                TowerWeapon towerWeapon = Tower.GetComponent<TowerWeapon>();
+                towerWeapon.SetUp(this, enemySpawner);
 
                 Vector3 CenterPosition = WallMap.GetCellCenterWorld(tilePosition);
                 CenterPosition -= WallMap.cellGap / 2;

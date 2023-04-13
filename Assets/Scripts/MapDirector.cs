@@ -43,6 +43,11 @@ public class MapDirector : MonoBehaviour
 
             Vector3Int cellPosition = WalkableMap.WorldToCell(worldPos);
 
+            if (WallMap.HasTile(cellPosition))
+            {
+                return;
+            }
+
             WallMap.SetTile(cellPosition, WallTile);
             WalkableMap.SetTile(cellPosition, null);
 

@@ -2,13 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EnemyDestroyType { Kill = 0, Arrive }
 public class Enemy : MonoBehaviour
 {
     public List<AStarNode> EnemyPath;
 
     public float PathUpdateDelay = 0.5f;
     private float LastPathUpdate;
+    private EnemySpawner enemySpawner;
 
+    [SerializeField]
+    private int gold = 10;
+
+    public void SetUp(EnemySpawner enemySpawner)
+    {
+        this.enemySpawner = enemySpawner;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -67,5 +76,13 @@ public class Enemy : MonoBehaviour
 
             transform.position = targetCenter;
         }
+    }
+
+
+    public void OnDie(EnemyDestroyType type)
+    {
+        // EnemySpawner에서 리스트로 적 정보를 관리하기 때문에 Destroy()를 직접하지 않고
+        // EnemySpawner에게 본인이 삭제될 때 필요한 처리를 하도록 DestroyEnemy() 함수 호출
+        enemySpawner.DestroyEnemy(type, this, gold);
     }
 }

@@ -19,7 +19,7 @@ public class AStarNode
 
     public AStarNode parent;
     public bool isWalkable;
-
+    public bool isBuildTower = false;
     public AStarNode()
     {
         xPos = -1;
