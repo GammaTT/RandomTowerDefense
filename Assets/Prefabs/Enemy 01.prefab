@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PathUpdateDelay: 0.5
+  gold: 10
 --- !u!114 &4602826309727014391
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -38,6 +38,13 @@ public class TowerSpawner : MonoBehaviour
         {
             Vector3 worldpos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
+            AStarNode WallNode = MapDirector.Instance.AStarGrid_.GetNodeFromWorld(worldpos);
+
+            if (WallNode.isBuildTower)
+            {
+                return;
+            }
+
             Vector3Int tilePosition = MapDirector.Instance.WallMap.WorldToCell(worldpos);
 
             if (MapDirector.Instance.WallMap.HasTile(tilePosition))
@@ -51,6 +58,7 @@ public class TowerSpawner : MonoBehaviour
 
                 Tower.transform.position = CenterPosition;
 
+                WallNode.isBuildTower = true;
             }
             //MapDirector.Instance.WallMap.HasTile(new Vector3Int(worldpos.x, worldpos.y, 0));
         }

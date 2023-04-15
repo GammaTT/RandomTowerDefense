@@ -85,4 +85,12 @@ public class Enemy : MonoBehaviour
         // EnemySpawner에게 본인이 삭제될 때 필요한 처리를 하도록 DestroyEnemy() 함수 호출
         enemySpawner.DestroyEnemy(type, this, gold);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Goal")
+        {
+            enemySpawner.DestroyEnemy(EnemyDestroyType.Arrive, this, gold);
+        }
+    }
 }

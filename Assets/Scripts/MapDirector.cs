@@ -41,6 +41,8 @@ public class MapDirector : MonoBehaviour
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             AStarNode Wall = AStarGrid_.GetNodeFromWorld(worldPos);
 
+            //Debug.Log(Wall.xPos + " " + Wall.yPos + " "  + Wall.isBuildTower);
+
             Vector3Int cellPosition = WalkableMap.WorldToCell(worldPos);
 
             if (WallMap.HasTile(cellPosition))

@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
+    private Player player;
+    [SerializeField]
     private GameObject Enemy01Prefab;
     [SerializeField]
     private float SpawnDelay;
@@ -49,13 +51,13 @@ public class EnemySpawner : MonoBehaviour
         if (type == EnemyDestroyType.Arrive)
         {
             // 플레이어의 체력 -1
-            //playerHP.TakeDamage(1);
+            player.TakeDamage(1);
         }
         // 적이 플레이어의 발사체에게 사망했을 떄
         else if (type == EnemyDestroyType.Kill)
         {
             // 적의 종류에 따라 사망 시 골드 획득
-            //playerGold.CurrentGold += gold;
+            player.gold += gold;
         }
 
         // 적이 사망할 때마다 현재 웨이브의 생존 적 숫자 감소 (UI 표시용)
