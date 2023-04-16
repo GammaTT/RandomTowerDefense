@@ -39,30 +39,23 @@ public class ObjectDetector : MonoBehaviour
         }
 
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             Vector2 raycasyPoint = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
             hit = Physics2D.Raycast(raycasyPoint, Vector2.zero);
 
-            //ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-            /*            if (Physics2D.Raycast(ray2D, out hit, Mathf.Infinity))
-                        {
-
-                        }*/
-
-
-            /*            if (hit.collider.gameObject.CompareTag("Enemy"))
-                        {
-
-                        }*/
+            if (hit.transform == null)
+            {
+                return;
+            }
 
             hitTransform = hit.transform;
 
             if (hit.transform.CompareTag("Tower"))
             {
-                Debug.Log("Tower");
+                //Debug.Log("Tower");
+                towerDataViewer.OnPanel(hit.transform);
             }
             else if (hit.transform.CompareTag("Enemy"))
             {

@@ -6,7 +6,6 @@ public class Tower : MonoBehaviour
 {
     private float RotateSpeed = 0.1f;
 
-    public float AttackRange = 3.0f;
     // Start is called before the first frame update
     void Start()
     {
