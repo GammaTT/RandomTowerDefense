@@ -15,7 +15,7 @@ public class TowerSpawner : MonoBehaviour
     private EnemySpawner enemySpawner;
 
     [SerializeField]
-    private GameObject TowerPrefab;
+    private GameObject[] TowerPrefab;
 
     [SerializeField]
     private Tilemap WallMap;
@@ -49,7 +49,9 @@ public class TowerSpawner : MonoBehaviour
 
             if (MapDirector.Instance.WallMap.HasTile(tilePosition))
             {
-                GameObject Tower = Instantiate(TowerPrefab, transform.position, Quaternion.identity);
+
+                GameObject Tower = Instantiate(TowerPrefab[Random.Range(0, TowerPrefab.Length)], transform.position, Quaternion.identity);
+                //GameObject Tower = Instantiate(TowerPrefab[1], transform.position, Quaternion.identity);
                 TowerWeapon towerWeapon = Tower.GetComponent<TowerWeapon>();
                 towerWeapon.SetUp(this, enemySpawner);
 

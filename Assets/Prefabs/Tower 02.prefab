@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3084227731996547674}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.891, y: 0.51, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -116,8 +116,8 @@ MonoBehaviour:
   towerData: {fileID: 11400000, guid: e77b966bf59282c44ac56f57de87d4f7, type: 2}
   spawnPoint: {fileID: 3084227733579070962}
   weaponType: 1
-  projectilePrefab: {fileID: 5411871193828641510, guid: f6526bdb9597471498a026844f6072a3, type: 3}
-  lineRenderer: {fileID: 0}
+  projectilePrefab: {fileID: 0}
+  lineRenderer: {fileID: 4252899330169576248}
   level: 0
 --- !u!58 &3084227731996547670
 CircleCollider2D:
@@ -218,7 +218,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 2ff9a1935a7da7841af6a185cb5e4947, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -238,13 +238,13 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.1
     widthCurve:
       serializedVersion: 2
       m_Curve:

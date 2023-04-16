@@ -1189,8 +1189,11 @@ MonoBehaviour:
   player: {fileID: 1533486789}
   towerData:
   - {fileID: 11400000, guid: e77b966bf59282c44ac56f57de87d4f7, type: 2}
+  - {fileID: 11400000, guid: e77b966bf59282c44ac56f57de87d4f7, type: 2}
   enemySpawner: {fileID: 851594189}
-  TowerPrefab: {fileID: 3084227731996547674, guid: 0602458d9ed58e7469715ae7f54a1ba7, type: 3}
+  TowerPrefab:
+  - {fileID: 3084227731996547674, guid: 0602458d9ed58e7469715ae7f54a1ba7, type: 3}
+  - {fileID: 3084227731996547674, guid: b506b40509ab4e84198524639bb5536f, type: 3}
   WallMap: {fileID: 281580768}
 --- !u!1 &1425653930
 GameObject:

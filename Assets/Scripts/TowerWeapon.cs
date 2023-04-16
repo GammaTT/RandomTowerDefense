@@ -48,7 +48,7 @@ public class TowerWeapon : MonoBehaviour
         this.enemySpawner = enemySpawner;
 
         //Invoke("ChangeState(WeaponState.SearchTarget)", 1f);
-        if (!(weaponType == WeaponType.Slow || weaponType == WeaponType.Laser))
+        if (!(weaponType == WeaponType.Slow || weaponType == WeaponType.Buff))
             ChangeState(WeaponState.SearchTarget);
     }
     // Update is called once per frame
@@ -211,4 +211,6 @@ public class TowerWeapon : MonoBehaviour
             }
         }
     }
+
+
 }

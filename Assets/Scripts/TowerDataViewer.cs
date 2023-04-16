@@ -23,7 +23,7 @@ public class TowerDataViewer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -57,5 +57,10 @@ public class TowerDataViewer : MonoBehaviour
         //textLevel.text = "Level : " + currentTower.Level;
         //textUpgradeCost.text = currentTower.UpgradeCost.ToString();
         //textSellCost.text = currentTower.SellCost.ToString();
+    }
+
+    public void UpGradeTower()
+    {
+
     }
 }
