@@ -59,8 +59,9 @@ public class TowerDataViewer : MonoBehaviour
         //textSellCost.text = currentTower.SellCost.ToString();
     }
 
-    public void UpGradeTower()
+    public void UpGradeTowerButton()
     {
-
+        currentTowerWeapon.UPGrade();
+        UpdateTowerData();
     }
 }

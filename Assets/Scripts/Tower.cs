@@ -4,8 +4,18 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    [SerializeField]
+    private TowerSpawner towerSpawner;
+    [SerializeField]
     private float RotateSpeed = 0.1f;
 
+    public AStarNode towerNode;
+
+    public void SetUp(TowerSpawner towerSpawner, AStarNode towerNode)
+    {
+        this.towerSpawner = towerSpawner;
+        this.towerNode = towerNode;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +26,11 @@ public class Tower : MonoBehaviour
     void Update()
     {
         transform.Rotate(Vector3.forward * RotateSpeed);
+    }
 
-
+    public void DestoryThisTower()
+    {
+        towerSpawner.DestoryTower(this.gameObject);
+        //Destroy(this.gameObject);
     }
 }

@@ -7,11 +7,13 @@ public class Player : MonoBehaviour
 {
     public int gold;
     public int maxHp;
+    private int _currentHp;
     public int currentHp
     {
-        get { return gold; }
-        set { gold = Mathf.Max(0,value); }
+        get { return _currentHp; }
+        private set { _currentHp = Mathf.Max(0, value); }
     }
+
     private int wallCount;
     private int towerCount;
 

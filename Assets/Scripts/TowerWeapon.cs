@@ -56,7 +56,19 @@ public class TowerWeapon : MonoBehaviour
     {
 
     }
+    //임시 스크립터블인데 되는지 수정중
+    //어떻게 할까..
 
+    public bool UPGrade()
+    {
+/*        towerData.weapon[level].damage += 5;
+        towerData.weapon[level].range += 5;
+        towerData.weapon[level].rate += 5;*/
+
+        level++;
+
+        return true;
+    }
     public void ChangeState(WeaponState newState)
     {
         // 이전에 재생중이던 상태 종료

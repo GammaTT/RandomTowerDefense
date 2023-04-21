@@ -21,7 +21,7 @@ public class PanelPlayerTMP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //playerGold.text = player.gold.ToString();
+        playerGold.text = player.gold.ToString();
         playerHp.text = player.currentHp.ToString();
     }
 }
