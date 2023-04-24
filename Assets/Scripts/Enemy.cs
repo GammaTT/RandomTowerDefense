@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]
     private int gold = 10;
+    [SerializeField]
+    private float MoveSpeed = 2.0f;
 
     public void SetUp(EnemySpawner enemySpawner)
     {
@@ -70,7 +72,7 @@ public class Enemy : MonoBehaviour
 
             while (Vector2.Distance(transform.position, targetCenter) > 0.1f)
             {
-                transform.position = Vector2.MoveTowards(transform.position, targetCenter, 1f * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, targetCenter, 1f * Time.deltaTime  * MoveSpeed);
                 yield return null;
             }
 

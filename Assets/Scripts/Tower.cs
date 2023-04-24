@@ -30,6 +30,7 @@ public class Tower : MonoBehaviour
 
     public void DestoryThisTower()
     {
+        towerNode.isBuildTower = false;
         towerSpawner.DestoryTower(this.gameObject);
         //Destroy(this.gameObject);
     }

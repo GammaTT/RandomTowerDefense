@@ -12,7 +12,7 @@ public class TowerWeapon : MonoBehaviour
     [SerializeField]
     private Transform spawnPoint;
     [SerializeField]
-    private WeaponType weaponType;
+    public WeaponType weaponType;
 
     [Header("Projectile")]
     [SerializeField]
@@ -22,7 +22,7 @@ public class TowerWeapon : MonoBehaviour
     [SerializeField]
     private LineRenderer lineRenderer;
 
-    private WeaponState weaponState = WeaponState.SearchTarget;
+    public WeaponState weaponState = WeaponState.SearchTarget;
     private Transform attackTarget = null;
     private SpriteRenderer spriteRenderer; //타워 현재 정보용 이미지
 

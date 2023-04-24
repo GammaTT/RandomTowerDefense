@@ -48,15 +48,14 @@ public class PanelGameManager : MonoBehaviour
             randomTowerSpawnerImage.transform.position = MousePosition;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && activeSomeThingButton)
         {
-            if(isTowerSpawnMode)
+            hit = Physics2D.Raycast(MousePosition, Vector2.zero);
+
+            if (isTowerSpawnMode)
             {
                 if (player.gold > randomTowerSpawnGold)
                 {
-
-                    hit = Physics2D.Raycast(MousePosition, Vector2.zero);
-
                     if (hit.transform == null || !hit.transform.CompareTag("WallMap"))
                     {
                         return;
@@ -67,7 +66,17 @@ public class PanelGameManager : MonoBehaviour
 
                 }
             }
+            else if (isTowerCombineMode)
+            {
+                if (hit.transform == null || !hit.transform.CompareTag("Tower"))
+                {
+                    return;
+                }
+
+                towerSpawner.CombineTower(hit.transform.gameObject);
+            }
         }
+
 
     }
 
