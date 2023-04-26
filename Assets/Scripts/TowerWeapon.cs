@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum WeaponType { Cannon = 0, Laser, Slow, Buff, Lightning}
+public enum WeaponType { Cannon = 0, Laser, Slow, Buff, Lightning, ChainLighning}
 
-public enum WeaponState { SearchTarget = 0, TryAttackCannon, TryAttackLaser }
+public enum WeaponState { SearchTarget = 0, TryAttackCannon, TryAttackLaser, TryAttackLightning }
 public class TowerWeapon : MonoBehaviour
 {
     [SerializeField]
@@ -96,6 +96,10 @@ public class TowerWeapon : MonoBehaviour
                 {
                     ChangeState(WeaponState.TryAttackLaser);
                 }
+                else if (weaponType == WeaponType.ChainLighning)
+                {
+                    ChangeState(WeaponState.TryAttackLightning);
+                }
             }
 
             yield return new WaitForEndOfFrame();
@@ -140,6 +144,29 @@ public class TowerWeapon : MonoBehaviour
         return true;
     }
 
+    private IEnumerator TryAttackLightning()
+    {
+/*        if (IsPossibleToAttackTarget() == false) 
+        {
+            ChangeState(WeaponState.SearchTarget);
+            yield return null;
+        }
+        yield return new WaitForEndOfFrame();*/
+
+        if (IsPossibleToAttackTarget() == false)
+        {
+            ChangeState(WeaponState.SearchTarget);
+            yield return null;
+        }
+        else
+        {
+            Lightning lightning = GetComponent<Lightning>();
+            lightning.SetUp(attackTarget.gameObject);
+            lightning.ChainLightningStart();
+            yield return new WaitForSeconds(2f);
+            ChangeState(WeaponState.SearchTarget);
+        }
+    }
     private IEnumerator TryAttackCannon()
     {
         while (true)

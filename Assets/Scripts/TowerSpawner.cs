@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class TowerSpawner : MonoBehaviour
 {
+    public bool testTowerOn;
+
+
     [SerializeField]
     private Player player;
 
@@ -28,7 +32,7 @@ public class TowerSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        towerList = new List<GameObject>();
+        towerList = new List<GameObject>(); 
     }
 
     // Update is called once per frame
@@ -91,10 +95,18 @@ public class TowerSpawner : MonoBehaviour
         Vector3Int tilePosition = MapDirector.Instance.WallMap.WorldToCell(towerSpawnPosition);
 
         //이 함수를 부르는 PanelGameManager의 함수는 CompareTag로 WallMap 인지 확인을 했기 때문에 hastile 로 체크하던거 없앰
-        GameObject Tower = Instantiate(TowerPrefab[Random.Range(0, TowerPrefab.Length)], transform.position, Quaternion.identity);
+
+        GameObject Tower;
+        if (testTowerOn)
+        {
+            Tower = Instantiate(TestTower, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Tower = Instantiate(TowerPrefab[Random.Range(0, TowerPrefab.Length)], transform.position, Quaternion.identity);
+        }
 
         towerList.Add(Tower);
-        //GameObject Tower = Instantiate(TestTower, transform.position, Quaternion.identity);
         TowerWeapon towerWeapon = Tower.GetComponent<TowerWeapon>();
         Tower tower = Tower.GetComponent<Tower>();
         towerWeapon.SetUp(this, enemySpawner);
@@ -113,37 +125,41 @@ public class TowerSpawner : MonoBehaviour
         TowerWeapon towerWeapon = Tower.GetComponent<TowerWeapon>();
         WeaponType towerWeaponType = towerWeapon.weaponType;
         int SearchCount = 0;
-        //GameObject [] SameTower = new GameObject[3];
+        List <GameObject> SameTower = new List<GameObject>();
         int [] findSameTower = new int[3];
 
-        Debug.Log("CombineTower");
+        Debug.Log(towerList.Count);
 
         for (int i = 0; i < towerList.Count; i++)
         {
             TowerWeapon towerWeaponInList = towerList[i].GetComponent<TowerWeapon>();
             if (towerWeaponInList.weaponType == towerWeapon.weaponType)
             {
+                SameTower.Add(towerList[i]);
                 findSameTower[SearchCount] = i;
                 SearchCount++;
 
                 if (SearchCount == 3)
                 {
+                    //List 에서 하나씩 인덱스로 삭제 했더니 
+                    //삭제 후 리스트 가 알아서 재정비해서 인덱스가 안맞아서 한번에 삭제하는식으로 함
+                    foreach (GameObject materialTower in SameTower)
+                    {
+                        Tower towerScript = materialTower.GetComponent<Tower>();
+                        towerScript.DestoryThisTower();
+                    }
+                    //SameTower.RemoveAt();
                     break;
                 }
             }
         }
 
-        Debug.Log("CombineTower2");
-
-        for (int i = 0; i < 3; i++)
-        {
-            Tower towerScript = towerList[findSameTower[i]].GetComponent<Tower>();
-            towerScript.DestoryThisTower();
-            //towerScript.towerNode.isBuildTower = false;
-            //towerList.Remove(towerList[findSameTower[i]]);
-            //Destroy(towerList[findSameTower[i]].gameObject);
-        }
         //Debug.Log(towerWeaponType.ToString());
+    }
+
+    public void CombineTower(List <GameObject> combineList)
+    {
+
     }
     public void DestoryTower(GameObject Tower)
     {
