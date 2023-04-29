@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lightning : MonoBehaviour
+public class ChainLightning : MonoBehaviour
 {
     private int segments = 5;
     private int chainCount = 3;
     private float lightningDuration = 0.2f;
     private float currentTime;
     private float damage = 1;
-    private float searchRadius = 10.0f;
+    private float searchRadius = 3.0f;
     private float lightningMoveTime = 0.1f;
 
     GameObject startObject;
@@ -27,16 +27,17 @@ public class Lightning : MonoBehaviour
     private LineRenderer lineRenderer;
 
     //bool isLightning = false;
-    public void SetUp(GameObject Enemy)
+    public void SetUp(GameObject Enemy, float damage)
     {
+        this.damage = damage;
         targetObject = Enemy;
     }
     // Start is called before the first frame update
     void Start()
     {
         alreadySearchObject = new List<GameObject>();
-        startObject = new GameObject();
-        targetObject = new GameObject();
+        startObject = this.gameObject;
+        //targetObject = new GameObject();
     }
 
     // Update is called once per frame
@@ -47,100 +48,60 @@ public class Lightning : MonoBehaviour
 
     public void ChainLightningStart()
     {
-        lineRenderer.enabled = true;
+        lineRenderer.enabled = false;
+
         alreadySearchObject.Clear();
         startObject = this.gameObject;
         //startObject = null;
 
-        StartCoroutine("ChainLightning");
+        StartCoroutine("ChainLightningSystem");
     }
-/*    public IEnumerator ChainLightning()
+
+    public IEnumerator ChainLightningSystem()
     {
-        StartCoroutine("LightningEffect");
-        yield return new WaitForSeconds(lightningMoveTime);
-
-        for (int i = 0; i < chainCount - 1; i++)
-        {
-            startPosition = targetPosition;
-            targetPosition = SearchEnemy(targetPosition).transform.position;
-            yield return new WaitForSeconds(lightningMoveTime);
-            StartCoroutine("LightningEffect");
-
-        }
-    }*/
-
-/*    public IEnumerator ChainLightning()
-    {
+        lineRenderer.enabled = true;
         for (int i = 0; i < chainCount; i++)
         {
-            lineRenderer.enabled = false;
+            //Debug.Log("Start : " + startObject.transform.position);
+            //Debug.Log("Target : " + targetObject.transform.position);
 
-            Debug.Log("Start : " + startObject.transform.position);
-            Debug.Log("Target : " + targetObject.transform.position);
+            if (startObject.CompareTag("Enemy") && !alreadySearchObject.Contains(startObject))
+            {
+                alreadySearchObject.Add(startObject);
+            }
 
-            StartCoroutine("LightningEffect");
-
-            startObject = targetObject;
-            
-            //startPosition = targetPosition;
-            targetObject = SearchEnemy(startObject);
-            yield return new WaitForSeconds(lightningMoveTime);
-
-        }
-        lineRenderer.enabled = false;
-    }*/
-
-    public IEnumerator ChainLightning()
-    {
-        lineRenderer.enabled = false;
-
-        for (int i = 0; i < chainCount; i++)
-        {
-            Debug.Log("Start : " + startObject.transform.position);
-            Debug.Log("Target : " + targetObject.transform.position);
-
-            alreadySearchObject.Add(startObject);
             alreadySearchObject.Add(targetObject);
+
             StartCoroutine("LightningEffect");
 
-            GameObject prevTarget = targetObject; // 이전 타겟 저장
-            startObject = prevTarget; // 이전 타겟을 새로운 시작 오브젝트로 설정
-            targetObject = SearchEnemy(startObject); // 시작 오브젝트를 기준으로 새로운 타겟 찾기
-            while (targetObject == prevTarget) // 새로운 타겟이 이전 타겟과 같다면 다시 타겟을 찾음
-            {
-                targetObject = SearchEnemy(startObject);
-                yield return new WaitForSeconds(0.1f);
-            }
+            startObject = targetObject; // 이전 타겟을 새로운 시작 오브젝트로 설정
+            targetObject = SearchEnemy(targetObject); // find new target object
 
+            if (targetObject == startObject)
+            {
+                //Debug.Log("No enemy");
+                break;
+            }
             yield return new WaitForSeconds(lightningMoveTime);
         }
+
+        foreach (GameObject enemy in alreadySearchObject)
+        {
+            if (enemy != null)
+            {
+                enemy.GetComponent<EnemyHp>().TakeDamage(damage);
+            }
+        }
+
         lineRenderer.enabled = false;
     }
-
-    /*    public GameObject SearchEnemy(Vector2 standardPosition)
-        {
-            GameObject TargetEnemy = new GameObject();
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(standardPosition, searchRadius, layerMask, 0.2f);
-            float closestDistance = Mathf.Infinity;
-
-            foreach (Collider2D collider in colliders)
-            {
-                float distance = Vector2.Distance(standardPosition, collider.gameObject.transform.position);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    TargetEnemy = collider.gameObject;
-                }
-            }
-
-            return TargetEnemy;
-        }*/
 
     public GameObject SearchEnemy(GameObject standardObject)
     {
-        GameObject TargetEnemy = new GameObject();
+        GameObject TargetEnemy = null;
         Collider2D[] colliders = Physics2D.OverlapCircleAll(standardObject.transform.position, searchRadius, layerMask);
         float closestDistance = Mathf.Infinity;
+        bool activeSearch = false;
 
         foreach (Collider2D collider in colliders)
         {
@@ -153,16 +114,25 @@ public class Lightning : MonoBehaviour
             float distance = Vector2.Distance(standardObject.transform.position, collider.gameObject.transform.position);
             if (distance < closestDistance)
             {
+                activeSearch = true;
                 closestDistance = distance;
                 TargetEnemy = collider.gameObject;
             }
         }
 
-        return TargetEnemy;
+        if (activeSearch)
+            return TargetEnemy;
+        else
+            return standardObject;
     }
 
     public IEnumerator LightningEffect()
     {
+        if (startObject == null || targetObject == null) 
+        {
+            yield break;
+        }
+
         lineRenderer.enabled = true;
 
         startPosition = startObject.transform.position;

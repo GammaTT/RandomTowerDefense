@@ -29,7 +29,16 @@ public class EnemySpawner : MonoBehaviour
             LastSpawnTime = Time.time;
         }*/
     }
-
+    public void AddWallTile()
+    {
+        foreach(Enemy enemy in enemyList)
+        {
+            if (enemy != null)
+            {
+                enemy.SetPath();
+            }
+        }
+    }
     private IEnumerator SpawnEnemy()
     {
         while (true)

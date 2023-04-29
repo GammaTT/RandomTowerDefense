@@ -34,9 +34,10 @@ public class Enemy : MonoBehaviour
             LastPathUpdate = Time.time;
             SetPath();
         }
+
     }
 
-    void SetPath()
+    public void SetPath()
     {
         EnemyPath = new List<AStarNode>(MapDirector.Instance.SetPathFromPosition(transform));
 

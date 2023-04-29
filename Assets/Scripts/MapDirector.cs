@@ -14,6 +14,9 @@ public class MapDirector : MonoBehaviour
 
     [SerializeField]
     private GameObject Goal;
+    [SerializeField]
+    private EnemySpawner enemySpawner;
+
     private Tile GoalTile;
     private AStarNode GoalNode;
 
@@ -55,6 +58,7 @@ public class MapDirector : MonoBehaviour
 
             AStarGrid_.ResetNode();
             AStarGrid_.CreateGrid();
+            enemySpawner.AddWallTile();
         }
     }
     public List<AStarNode> SetPathFromPosition(Transform StartPosition)

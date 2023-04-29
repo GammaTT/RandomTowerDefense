@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 3472812604892524593}
   - component: {fileID: 3084227731996547670}
   m_Layer: 0
-  m_Name: Lightning Tower 1
+  m_Name: 2 Tower 01
   m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -279,13 +279,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dad5fb36a2ec854781eb0b9ac5edbcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerData: {fileID: 11400000, guid: 8ef6afcdc5db2fb42828ffb5dee7615e, type: 2}
+  towerData: {fileID: 11400000, guid: bfd7c426bda30f247aa8e594ea43e1c3, type: 2}
   spawnPoint: {fileID: 3084227733579070962}
-  weaponType: 5
+  weaponType: 4
   projectilePrefab: {fileID: 3988982820199238153, guid: 217811d62615ae048819a02cb332d94e, type: 3}
+  bombProjectilePrefab: {fileID: 0}
   lineRenderer: {fileID: 0}
   weaponState: 0
   level: 0
+  grade: 2
 --- !u!114 &3472812604892524593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,7 +300,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8155a2daa84e85943993f184103856b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 64

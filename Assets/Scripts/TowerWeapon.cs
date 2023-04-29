@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum WeaponType { Cannon = 0, Laser, Slow, Buff, Lightning, ChainLighning}
+public enum WeaponType { Cannon = 0, Laser, Slow, Buff, ChainLightning, Bomb}
 
-public enum WeaponState { SearchTarget = 0, TryAttackCannon, TryAttackLaser, TryAttackLightning }
+public enum WeaponState { SearchTarget = 0, TryAttackCannon, TryAttackLaser, TryAttackChainLightning }
 public class TowerWeapon : MonoBehaviour
 {
     [SerializeField]
@@ -17,6 +17,9 @@ public class TowerWeapon : MonoBehaviour
     [Header("Projectile")]
     [SerializeField]
     private GameObject projectilePrefab;
+    [Header("BombProjectile")]
+    [SerializeField]
+    private GameObject bombProjectilePrefab;
 
     [Header("Laser")]
     [SerializeField]
@@ -31,6 +34,7 @@ public class TowerWeapon : MonoBehaviour
 
     public Sprite towerSprite => towerData.weapon[level].sprite; // 현재 레벨의 타워 이미지로의 람다함수
     public int level = 1; // 이것도 나중에 돼는지 확인 해야됌
+    public int grade;
     public float damage => towerData.weapon[level].damage;
     public float range => towerData.weapon[level].range;
     public float rate => towerData.weapon[level].rate;
@@ -88,7 +92,7 @@ public class TowerWeapon : MonoBehaviour
             if (attackTarget != null)
             {
                 //string weaponTypeString = 
-                if (weaponType == WeaponType.Cannon)
+                if (weaponType == WeaponType.Cannon || weaponType == WeaponType.Bomb)
                 {
                     ChangeState(WeaponState.TryAttackCannon);
                 }
@@ -96,9 +100,9 @@ public class TowerWeapon : MonoBehaviour
                 {
                     ChangeState(WeaponState.TryAttackLaser);
                 }
-                else if (weaponType == WeaponType.ChainLighning)
+                else if (weaponType == WeaponType.ChainLightning)
                 {
-                    ChangeState(WeaponState.TryAttackLightning);
+                    ChangeState(WeaponState.TryAttackChainLightning);
                 }
             }
 
@@ -144,7 +148,7 @@ public class TowerWeapon : MonoBehaviour
         return true;
     }
 
-    private IEnumerator TryAttackLightning()
+    private IEnumerator TryAttackChainLightning()
     {
 /*        if (IsPossibleToAttackTarget() == false) 
         {
@@ -160,10 +164,10 @@ public class TowerWeapon : MonoBehaviour
         }
         else
         {
-            Lightning lightning = GetComponent<Lightning>();
-            lightning.SetUp(attackTarget.gameObject);
+            ChainLightning lightning = GetComponent<ChainLightning>();
+            lightning.SetUp(attackTarget.gameObject, towerData.weapon[level].damage);
             lightning.ChainLightningStart();
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(towerData.weapon[level].rate);
             ChangeState(WeaponState.SearchTarget);
         }
     }
@@ -178,7 +182,14 @@ public class TowerWeapon : MonoBehaviour
             }
             yield return new WaitForSeconds(towerData.weapon[level].rate);
 
-            SpawnProjectile();
+            if (weaponType == WeaponType.Cannon)
+            {
+                SpawnProjectile();
+            }
+            else if (weaponType == WeaponType.Bomb)
+            {
+                SpawnBombProjectile();
+            }
 
         }
     }
@@ -204,6 +215,15 @@ public class TowerWeapon : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    private void SpawnBombProjectile()
+    {
+        GameObject clone = Instantiate(bombProjectilePrefab, spawnPoint.position, Quaternion.identity);
+        // 생성된 발사체에게 공격대상(attackTarget) 정보 제공
+        // 공격력 = 타워 기본 공격력 + 버프에 의해 추가된 공격력
+        float damage = towerData.weapon[level].damage; // +Adddamage
+        clone.GetComponent<BombProjectile>().Setup(attackTarget, damage);
     }
     private void SpawnProjectile()
     {

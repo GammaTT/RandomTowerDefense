@@ -15,6 +15,7 @@ public class Tower : MonoBehaviour
     {
         this.towerSpawner = towerSpawner;
         this.towerNode = towerNode;
+        this.towerNode.isBuildTower = true;
     }
     // Start is called before the first frame update
     void Start()
