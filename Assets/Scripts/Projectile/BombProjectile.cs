@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,10 +12,14 @@ public class BombProjectile : MonoBehaviour
     private float currentTime;
     private float bombRadius = 2.0f;
     private float bombDuration = 1.0f;
+    private float bombTime = 0.5f;
+    private float bombStartDistance = 0.5f;
     private bool isExploding = false;
     private bool isBomb = false;
     private SpriteRenderer spriteRenderer;
 
+    [SerializeField]
+    private ParticleSystem bombParticle;
     private void Start()
     {
         currentTime = Time.time;
@@ -35,6 +40,13 @@ public class BombProjectile : MonoBehaviour
             Vector3 direction = (target.position - transform.position).normalized;
 
             transform.position += direction * moveSpeed * Time.deltaTime;
+
+            if (Vector2.Distance(transform.position, target.position) < bombStartDistance)
+            {
+                isExploding = true;
+
+                StartCoroutine("Bomb");
+            }
         }
         else if (target == null)              // 여러 이유로 target이 사라지면
         {
@@ -48,13 +60,13 @@ public class BombProjectile : MonoBehaviour
         //collision object is not enemy
         if (!collision.CompareTag("Enemy")) return;   
 
-        if (!isExploding && !isBomb) 
+/*        if (!isExploding && !isBomb) 
         {
             isExploding = true;
-            transform.position = target.position;
+            transform.position = (transform.position + target.position ) / 2;
             StartCoroutine("Bomb");
             return;
-        }
+        }*/
     }
 
     private IEnumerator Bomb()
@@ -77,7 +89,10 @@ public class BombProjectile : MonoBehaviour
                 {
                     if (col.CompareTag("Enemy"))
                     {
+                        spriteRenderer.color = new Color(0f, 0f, 0f, 0f);
+                        bombParticle.Play();
                         col.GetComponent<EnemyHp>().TakeDamage(damage);
+                        yield return new WaitForSeconds(bombTime);
                         Destroy(gameObject);
                     }
                 }

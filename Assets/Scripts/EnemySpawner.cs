@@ -29,7 +29,7 @@ public class EnemySpawner : MonoBehaviour
             LastSpawnTime = Time.time;
         }*/
     }
-    public void AddWallTile()
+    public void CheckPathForAllEnemy()
     {
         foreach(Enemy enemy in enemyList)
         {

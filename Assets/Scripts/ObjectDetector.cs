@@ -10,10 +10,11 @@ public class ObjectDetector : MonoBehaviour
     [SerializeField]
     private TowerDataViewer towerDataViewer;
     [SerializeField]
+    private TowerAttackRange towerAttackRange;
+    [SerializeField]
     private EnemySpawner enemySpawner;
 
     private Camera mainCamera;
-    private Ray ray;
     private Ray2D ray2D;
     private RaycastHit2D hit;
     private Transform hitTransform = null; // 임시 저장
@@ -54,14 +55,22 @@ public class ObjectDetector : MonoBehaviour
 
             if (hit.transform.CompareTag("Tower"))
             {
+                TowerWeapon towerWeapon = hit.transform.GetComponent<TowerWeapon>();
                 //Debug.Log("Tower");
+                towerAttackRange.gameObject.SetActive(true);
+                towerAttackRange.OnAttackRange(hit.transform.position, towerWeapon.range);
                 towerDataViewer.OnPanel(hit.transform);
             }
-            else if (hit.transform.CompareTag("Enemy"))
+            else
+            {
+                towerAttackRange.gameObject.SetActive(false);
+            }
+
+/*            else if (hit.transform.CompareTag("Enemy"))
             {
                 Debug.Log("Enemy");
 
-            }
+            }*/
 
         }
     }

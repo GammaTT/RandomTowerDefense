@@ -60,50 +60,6 @@ public class AStarGrid
 
         return StartToEndPath;
     }
-/*    private void Start()
-    {
-        // 초기화
-        CreateGrid();
-        pathfinder = new AStarPathfind(this);
-        
-    }*/
-
-/*    private void Update()
-    {
-        //TEST
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            startNode = GetNodeFromWorld(worldPos);
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            endNode = GetNodeFromWorld(worldPos);
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            AStarNode Wall = GetNodeFromWorld(worldPos);
-
-            Vector3Int cellPosition = walkableMap.WorldToCell(worldPos);
-
-            wallmap.SetTile(cellPosition, WallTile);
-            walkableMap.SetTile(cellPosition, null);
-
-            ResetNode();
-            CreateGrid();
-        }
-
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            TestPathfind(Diagonal);
-        }
-        
-    }*/
-
 
     public void CreateGrid()
     {

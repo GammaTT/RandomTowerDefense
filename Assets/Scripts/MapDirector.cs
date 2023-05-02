@@ -11,16 +11,21 @@ public class MapDirector : MonoBehaviour
     public Tilemap WalkableMap;
     public Tilemap WallMap;
     public Tile WallTile;
+    public Tile WalkableTile;
 
     [SerializeField]
     private GameObject Goal;
     [SerializeField]
     private EnemySpawner enemySpawner;
+    [SerializeField]
+    private Pathfinder showPath;
 
     private Tile GoalTile;
     private AStarNode GoalNode;
 
     public List<AStarNode> StartToEndPath;
+
+    public GameObject Boo;
 
     private void Awake()
     {
@@ -43,10 +48,22 @@ public class MapDirector : MonoBehaviour
         {
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             AStarNode Wall = AStarGrid_.GetNodeFromWorld(worldPos);
-
-            //Debug.Log(Wall.xPos + " " + Wall.yPos + " "  + Wall.isBuildTower);
-
             Vector3Int cellPosition = WalkableMap.WorldToCell(worldPos);
+
+/*            if (CheckPath(cellPosition) == false)
+            {
+                Debug.Log("Can not build wall tile there");
+                WallMap.SetTile(cellPosition, null);
+                WalkableMap.SetTile(cellPosition, WalkableTile);
+                return;
+            }*/
+
+            if (CheckPath(Wall) == false)
+            {
+                Debug.Log("Can not build wall tile there");
+                Wall.isWalkable = true;
+                return;
+            }
 
             if (WallMap.HasTile(cellPosition))
             {
@@ -58,11 +75,55 @@ public class MapDirector : MonoBehaviour
 
             AStarGrid_.ResetNode();
             AStarGrid_.CreateGrid();
-            enemySpawner.AddWallTile();
+            enemySpawner.CheckPathForAllEnemy();
+            showPath.ShowPath();
         }
         if (Input.GetKeyDown(KeyCode.F12))
         {
             SceneManager.LoadScene("SampleScene");
+        }
+    }
+
+    public bool CheckPath(AStarNode WallNode)
+    {
+        WallNode.isWalkable = false;
+
+        AStarNode StartNode = AStarGrid_.GetNodeFromWorld(enemySpawner.gameObject.transform.position);
+        AStarNode EndNode = AStarGrid_.GetNodeFromWorld(Goal.transform.position);
+
+        List<AStarNode> Path = new List<AStarNode>();
+        Path = AStarGrid_.pathfinder.CreatePath(StartNode, EndNode);
+
+        if (Path == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    public bool CheckPath(Vector3Int cellPosition)
+    {
+        WallMap.SetTile(cellPosition, WallTile);
+        WalkableMap.SetTile(cellPosition, null);
+
+        AStarGrid_.ResetNode();
+        AStarGrid_.CreateGrid();
+
+        AStarNode StartNode = AStarGrid_.GetNodeFromWorld(enemySpawner.gameObject.transform.position);
+        AStarNode EndNode = AStarGrid_.GetNodeFromWorld(Goal.transform.position);
+
+        List <AStarNode> Path = new List <AStarNode>();
+        Path = AStarGrid_.pathfinder.CreatePath(StartNode, EndNode);
+
+        if (Path == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
     public List<AStarNode> SetPathFromPosition(Transform StartPosition)
@@ -71,7 +132,15 @@ public class MapDirector : MonoBehaviour
         AStarNode StartNode = AStarGrid_.GetNodeFromWorld(StartPosition.position);
         AStarNode EndNode = AStarGrid_.GetNodeFromWorld(Goal.transform.position);
 
-        StartToEndPath = new List<AStarNode>(AStarGrid_.pathfinder.CreatePath(StartNode, EndNode));
+        StartToEndPath = new List<AStarNode>();
+        //StartToEndPath = new List<AStarNode>(AStarGrid_.pathfinder.CreatePath(StartNode, EndNode));
+
+        StartToEndPath = AStarGrid_.pathfinder.CreatePath(StartNode, EndNode);
+
+/*        if (StartToEndPath == null)
+        {
+            Debug.Log("fucking null");
+        }*/
 
         for (int i = 0; i < StartToEndPath.Count; i++)
         {
@@ -87,4 +156,8 @@ public class MapDirector : MonoBehaviour
         return StartToEndPath;
     }
 
+    public Vector3 GetEnemySpanwerPosition()
+    {
+        return enemySpawner.gameObject.transform.position;
+    }
 }

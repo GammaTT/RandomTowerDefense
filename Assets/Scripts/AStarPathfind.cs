@@ -76,8 +76,13 @@ public class AStarPathfind
             var neighbors = grid.GetNeighborNodes(currentNode, diagonal);
             for (int i = 0; i < neighbors.Count; i++)
             {
-                if (closedSet.Contains(neighbors[i]) || !neighbors[i].isWalkable) continue;
+                if (closedSet.Contains(neighbors[i]) || !neighbors[i].isWalkable)
+                {
+                    continue;
+                }
+
                 var gCost = currentNode.gCost + Heuristic(currentNode, neighbors[i], diagonal);
+
                 if (gCost < neighbors[i].gCost)
                 {
                     neighbors[i].parent = currentNode;
