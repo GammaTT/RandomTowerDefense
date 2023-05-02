@@ -30,20 +30,13 @@ public class ChainLightning : MonoBehaviour
     public void SetUp(GameObject Enemy, float damage)
     {
         this.damage = damage;
+        startObject = this.gameObject;
         targetObject = Enemy;
     }
     // Start is called before the first frame update
     void Start()
     {
         alreadySearchObject = new List<GameObject>();
-        startObject = this.gameObject;
-        //targetObject = new GameObject();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void ChainLightningStart()
@@ -65,12 +58,16 @@ public class ChainLightning : MonoBehaviour
             //Debug.Log("Start : " + startObject.transform.position);
             //Debug.Log("Target : " + targetObject.transform.position);
 
-            if (startObject.CompareTag("Enemy") && !alreadySearchObject.Contains(startObject))
+            //startObject is start from tower that check tag
+            if (startObject != null && startObject.CompareTag("Enemy") && !alreadySearchObject.Contains(startObject))
             {
                 alreadySearchObject.Add(startObject);
             }
 
-            alreadySearchObject.Add(targetObject);
+            if (targetObject != null && !alreadySearchObject.Contains(targetObject))
+            {
+                alreadySearchObject.Add(targetObject);
+            }
 
             StartCoroutine("LightningEffect");
 
@@ -79,17 +76,19 @@ public class ChainLightning : MonoBehaviour
 
             if (targetObject == startObject)
             {
-                //Debug.Log("No enemy");
                 break;
             }
             yield return new WaitForSeconds(lightningMoveTime);
         }
 
-        foreach (GameObject enemy in alreadySearchObject)
+        if (alreadySearchObject.Count > 0)
         {
-            if (enemy != null)
+            foreach (GameObject enemy in alreadySearchObject)
             {
-                enemy.GetComponent<EnemyHp>().TakeDamage(damage);
+                if (enemy != null)
+                {
+                    enemy.GetComponent<EnemyHp>().TakeDamage(damage);
+                }
             }
         }
 
@@ -105,7 +104,8 @@ public class ChainLightning : MonoBehaviour
 
         foreach (Collider2D collider in colliders)
         {
-            if (standardObject == collider.gameObject || startObject == collider.gameObject 
+            //collider can was just before destroyed than check it
+            if (collider == null || standardObject == collider.gameObject
                 || alreadySearchObject.Contains(collider.gameObject))
             {
                 continue;
@@ -120,6 +120,7 @@ public class ChainLightning : MonoBehaviour
             }
         }
 
+        //just in if TargetEnemy == null is simple but standardObject is must always be used, so use
         if (activeSearch)
             return TargetEnemy;
         else

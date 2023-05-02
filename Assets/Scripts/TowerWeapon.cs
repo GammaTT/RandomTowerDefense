@@ -150,13 +150,6 @@ public class TowerWeapon : MonoBehaviour
 
     private IEnumerator TryAttackChainLightning()
     {
-/*        if (IsPossibleToAttackTarget() == false) 
-        {
-            ChangeState(WeaponState.SearchTarget);
-            yield return null;
-        }
-        yield return new WaitForEndOfFrame();*/
-
         if (IsPossibleToAttackTarget() == false)
         {
             ChangeState(WeaponState.SearchTarget);
@@ -166,7 +159,10 @@ public class TowerWeapon : MonoBehaviour
         {
             ChainLightning lightning = GetComponent<ChainLightning>();
             lightning.SetUp(attackTarget.gameObject, towerData.weapon[level].damage);
+
+            //try-catch use?
             lightning.ChainLightningStart();
+ 
             yield return new WaitForSeconds(towerData.weapon[level].rate);
             ChangeState(WeaponState.SearchTarget);
         }
@@ -206,6 +202,10 @@ public class TowerWeapon : MonoBehaviour
             {
                 // 레이저, 레이저 타격 효과 비활성화
                 DisableLaser();
+
+                //enable and Research cooltime
+                yield return new WaitForSeconds(towerData.weapon[level].rate);
+
                 ChangeState(WeaponState.SearchTarget);
                 break;
             }

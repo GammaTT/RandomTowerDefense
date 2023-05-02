@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
+using UnityEngine.SceneManagement;
 public class MapDirector : MonoBehaviour
 {
     static public MapDirector Instance;
@@ -59,6 +59,10 @@ public class MapDirector : MonoBehaviour
             AStarGrid_.ResetNode();
             AStarGrid_.CreateGrid();
             enemySpawner.AddWallTile();
+        }
+        if (Input.GetKeyDown(KeyCode.F12))
+        {
+            SceneManager.LoadScene("SampleScene");
         }
     }
     public List<AStarNode> SetPathFromPosition(Transform StartPosition)
