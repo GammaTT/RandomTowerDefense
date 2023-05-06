@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 3084227731996547669}
   - component: {fileID: 3084227731996547670}
   m_Layer: 0
-  m_Name: 1 Tower 01
+  m_Name: 1 Tower 03
   m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,7 +109,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 8ff5851d96e353540b1e6d34f6dafe7b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c135213a5c54f2f4984eaa105cc33b20, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -146,12 +146,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dad5fb36a2ec854781eb0b9ac5edbcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerData: {fileID: 11400000, guid: 8ef6afcdc5db2fb42828ffb5dee7615e, type: 2}
+  towerData: {fileID: 11400000, guid: e77b966bf59282c44ac56f57de87d4f7, type: 2}
   spawnPoint: {fileID: 3084227733579070962}
-  weaponType: 0
-  targetProjectilePrefab: {fileID: 5411871193828641510, guid: f6526bdb9597471498a026844f6072a3, type: 3}
+  weaponType: 6
+  targetProjectilePrefab: {fileID: 0}
   bombProjectilePrefab: {fileID: 0}
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 5411871193828641510, guid: eecdc3777c2e15e47bab122be719a60a, type: 3}
   lineRenderer: {fileID: 0}
   weaponState: 0
   level: 0

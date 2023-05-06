@@ -2,9 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum WeaponType { Cannon = 0, Laser, Slow, Buff, ChainLightning, Bomb}
+public enum WeaponType 
+{ 
+    Cannon = 0, 
+    Laser, Slow, Buff, 
+    ChainLightning, Bomb, 
+    MultiWayShooting
+}
 
-public enum WeaponState { SearchTarget = 0, TryAttackCannon, TryAttackLaser, TryAttackChainLightning }
+public enum WeaponState 
+{ 
+    SearchTarget = 0, TryAttackCannon,
+    TryAttackLaser, TryAttackChainLightning,
+    TryAttackMultiShooting
+}
 public class TowerWeapon : MonoBehaviour
 {
     [SerializeField]
@@ -16,10 +27,13 @@ public class TowerWeapon : MonoBehaviour
 
     [Header("Projectile")]
     [SerializeField]
-    private GameObject projectilePrefab;
+    private GameObject targetProjectilePrefab;
     [Header("BombProjectile")]
     [SerializeField]
     private GameObject bombProjectilePrefab;
+    [Header("MultiShoot")]
+    [SerializeField]
+    private GameObject projectilePrefab;
 
     [Header("Laser")]
     [SerializeField]
@@ -104,6 +118,10 @@ public class TowerWeapon : MonoBehaviour
                 {
                     ChangeState(WeaponState.TryAttackChainLightning);
                 }
+                else if (weaponType == WeaponType.MultiWayShooting)
+                {
+                    ChangeState(WeaponState.TryAttackMultiShooting);
+                }
             }
 
             yield return new WaitForEndOfFrame();
@@ -148,6 +166,22 @@ public class TowerWeapon : MonoBehaviour
         return true;
     }
 
+    private IEnumerator TryAttackMultiShooting()
+    {
+        while (true)
+        {
+            if (IsPossibleToAttackTarget() == false)
+            {
+                ChangeState(WeaponState.SearchTarget);
+                break;
+            }
+
+            SpawnMultiProjectile();
+
+            yield return new WaitForSeconds(towerData.weapon[level].rate);
+
+        }
+    }
     private IEnumerator TryAttackChainLightning()
     {
         if (IsPossibleToAttackTarget() == false)
@@ -180,13 +214,12 @@ public class TowerWeapon : MonoBehaviour
 
             if (weaponType == WeaponType.Cannon)
             {
-                SpawnProjectile();
+                SpawnTargetProjectile();
             }
             else if (weaponType == WeaponType.Bomb)
             {
                 SpawnBombProjectile();
             }
-
         }
     }
 
@@ -217,6 +250,22 @@ public class TowerWeapon : MonoBehaviour
         }
     }
 
+    private void SpawnMultiProjectile()
+    {
+        Vector3 []targetMove = new Vector3[3] ;
+        targetMove[0] = (attackTarget.transform.position - transform.position);
+        targetMove[1] = Quaternion.AngleAxis(45f, Vector3.forward) * targetMove[0];
+        targetMove[2] = Quaternion.AngleAxis(-45f, Vector3.forward) * targetMove[0];
+
+        GameObject [] projectileClones = new GameObject[3];
+        float damage = towerData.weapon[level].damage; //+add damage
+
+        for (int i = 0; i < projectileClones.Length; i++)
+        {
+            projectileClones[i] = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
+            projectileClones[i].GetComponent<Projectile>().Setup(targetMove[i], damage);
+        }
+    }
     private void SpawnBombProjectile()
     {
         GameObject clone = Instantiate(bombProjectilePrefab, spawnPoint.position, Quaternion.identity);
@@ -225,9 +274,9 @@ public class TowerWeapon : MonoBehaviour
         float damage = towerData.weapon[level].damage; // +Adddamage
         clone.GetComponent<BombProjectile>().Setup(attackTarget, damage);
     }
-    private void SpawnProjectile()
+    private void SpawnTargetProjectile()
     {
-        GameObject clone = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
+        GameObject clone = Instantiate(targetProjectilePrefab, spawnPoint.position, Quaternion.identity);
         // 생성된 발사체에게 공격대상(attackTarget) 정보 제공
         // 공격력 = 타워 기본 공격력 + 버프에 의해 추가된 공격력
         float damage = towerData.weapon[level].damage; // +Adddamage

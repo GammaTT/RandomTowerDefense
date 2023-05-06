@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public enum EnemyDestroyType { Kill = 0, Arrive }
@@ -8,7 +9,7 @@ public class Enemy : MonoBehaviour
     public List<AStarNode> EnemyPath;
 
     public float RotateSpeed = 0.1f;
-    private float PathUpdateDelay = 0.5f;
+    private float PathUpdateDelay = 1f;
     private float LastPathUpdate;
     private EnemySpawner enemySpawner;
 
@@ -17,6 +18,10 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float MoveSpeed = 2.0f;
 
+
+    private float currentTime;
+    private float nextNodeMoveTime = 0.5f;
+    private float nodeArriveDistance = 0.1f;
     public void SetUp(EnemySpawner enemySpawner)
     {
         this.enemySpawner = enemySpawner;
@@ -24,26 +29,29 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        EnemyPath = new List<AStarNode>();
         LastPathUpdate = Time.time;
+        SetPath();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.time - LastPathUpdate > PathUpdateDelay) 
+        /*if (Time.time - LastPathUpdate > PathUpdateDelay) 
         {
             LastPathUpdate = Time.time;
             SetPath();
-        }
+        }*/ //벽을 설치할 때만 새로 경로 설정으로 바꿈
 
         transform.Rotate(Vector3.forward * -RotateSpeed);
     }
 
     public void SetPath()
     {
-        EnemyPath = new List<AStarNode>(MapDirector.Instance.SetPathFromPosition(transform));
-
         StopCoroutine("Move");
+
+        EnemyPath = (MapDirector.Instance.SetPathFromPosition(transform));
+
         StartCoroutine("Move");
 
         //Debug.Log(EnemyPath.Count);
@@ -51,6 +59,37 @@ public class Enemy : MonoBehaviour
 
     public IEnumerator Move()
     {
+        foreach (var node in EnemyPath)
+        {
+            //벽을 설치할때 첫번째 노드에서 버벅거리기 때문에 다음 반복으로 넘어가기
+            if (node == EnemyPath[0])
+            {
+                continue;
+            }
+            Vector2 targetPositon = new Vector2(node.xPos, node.yPos);
+            Vector2 currentPosition = transform.position;
+            currentTime = Time.time;
+            while (true)
+            {
+                Vector3 move = (targetPositon - currentPosition).normalized * Time.deltaTime;
+                transform.position += move;
+
+                float u = (Time.time - currentTime) / nextNodeMoveTime;
+
+                transform.position = Vector3.Lerp(currentPosition, targetPositon, u);
+
+                if (Vector2.Distance(transform.position, targetPositon) < nodeArriveDistance)
+                {
+                    break;
+                }
+
+                yield return new WaitForEndOfFrame();
+            }
+
+        }
+
+  /*      Debug.Log("enemypath : " + EnemyPath[0].xPos + " " + EnemyPath[0].yPos);
+
         for (int i = 1; i < EnemyPath.Count; i++)
         {
             var node = EnemyPath[i];
@@ -75,14 +114,15 @@ public class Enemy : MonoBehaviour
 
             while (Vector2.Distance(transform.position, targetCenter) > 0.1f)
             {
-                transform.position = Vector2.MoveTowards(transform.position, targetCenter, 1f * Time.deltaTime  * MoveSpeed);
+                transform.position = Vector2.MoveTowards(transform.position, targetCenter, 1f * Time.deltaTime * MoveSpeed);
                 yield return null;
             }
 
             transform.position = targetCenter;
-        }
+        }*/
     }
 
+    
 
     public void OnDie(EnemyDestroyType type)
     {

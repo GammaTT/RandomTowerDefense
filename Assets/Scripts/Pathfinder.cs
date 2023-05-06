@@ -8,8 +8,9 @@ public class Pathfinder : MonoBehaviour
     private float nodeArriveDistance = 0.1f;
     private float pathFindDelay = 5.0f;
     private float lastPathFindTime;
-    private float nextNodeMoveTime = 0.1f;
+    private float nextNodeMoveTime = 0.05f;
     private float currentTime;
+    private TrailRenderer trailRenderer;
 
     [SerializeField]
     private GameObject boo;
@@ -17,6 +18,7 @@ public class Pathfinder : MonoBehaviour
     void Start()
     {
         Path = new List<AStarNode>();
+        trailRenderer = GetComponent<TrailRenderer>();
         currentTime = Time.time;
         SetPath();
         StartCoroutine("MoveToPath");
@@ -26,17 +28,22 @@ public class Pathfinder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time -  lastPathFindTime > pathFindDelay)
+/*        if (Time.time -  lastPathFindTime > pathFindDelay)
         {
             ShowPath();
-        }
+        }*/
     }
 
     public void ShowPath()
     {
+        trailRenderer.Clear();
+        trailRenderer.enabled = false;
+
         lastPathFindTime = Time.time;
         transform.position = MapDirector.Instance.GetEnemySpanwerPosition();
+
         StopCoroutine("MoveToPath");
+        trailRenderer.enabled = true;
         SetPath();
         StartCoroutine("MoveToPath");
     }
@@ -47,6 +54,7 @@ public class Pathfinder : MonoBehaviour
 
     public IEnumerator MoveToPath()
     {
+        //Debug.Log("pathfinder : " + Path[0].xPos + " " + Path[0].yPos);
         foreach (var node in Path)
         {
             Vector2 targetPositon = new Vector2(node.xPos, node.yPos);
@@ -70,6 +78,14 @@ public class Pathfinder : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
 
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Goal")
+        {
+            Invoke("ShowPath" ,1f);
         }
     }
 }

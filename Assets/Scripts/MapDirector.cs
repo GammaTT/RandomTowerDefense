@@ -48,25 +48,38 @@ public class MapDirector : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            Vector2 raycasyPoint = worldPos;
+            RaycastHit2D hit = Physics2D.Raycast(raycasyPoint, Vector2.zero);
+            if (hit.transform == null || !hit.transform.CompareTag("WalkableMap"))
+            {
+                Debug.Log("There is non walkabletilemap fuck you");
+                return;
+            }
+
             AStarNode Wall = aStarGrid.GetNodeFromWorld(worldPos);
             Vector3Int cellPosition = WalkableMap.WorldToCell(worldPos);
 
             if (CheckPath(Wall) == false)
             {
-                Debug.Log("Can not build wall tile there");
+                Debug.Log("길을 막습니다.");
                 Wall.isWalkable = true;
                 return;
             }
 
-            if (WallMap.HasTile(cellPosition))
+            //null 체크와 WalkableMap에서 있는지 체크를 했기 때문에 필요가 없다.
+/*            if (WallMap.HasTile(cellPosition))
             {
                 return;
             }
             else if (NonWallMap.HasTile(cellPosition))
             {
-                Debug.Log("nonwallmap");
                 return;
             }
+            else if (!WalkableMap.HasTile(cellPosition))
+            {
+                return;
+            }*/
 
             WallMap.SetTile(cellPosition, WallTile);
             WalkableMap.SetTile(cellPosition, null);
@@ -85,7 +98,6 @@ public class MapDirector : MonoBehaviour
     public bool CheckPath(AStarNode WallNode)
     {
         WallNode.isWalkable = false;
-
         AStarNode StartNode = aStarGrid.GetNodeFromWorld(enemySpawner.gameObject.transform.position);
         AStarNode EndNode = aStarGrid.GetNodeFromWorld(Goal.transform.position);
 

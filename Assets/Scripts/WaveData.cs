@@ -15,6 +15,8 @@ public class WaveData : MonoBehaviour
     // 웨이브 정보 출력을 위한 Get 프로퍼티 (현재 웨이브, 총 웨이브)
     public int MaxWave => waves.Length;
 
+
+
     public void StartWave()
     {
         if (currentWaveIndex < waves.Length)
