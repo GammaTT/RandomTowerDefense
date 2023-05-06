@@ -88,7 +88,7 @@ public class TowerSpawner : MonoBehaviour
 
     public void SpawnTower(Vector2 towerSpawnPosition)
     {
-        AStarNode WallNode = MapDirector.Instance.AStarGrid_.GetNodeFromWorld(towerSpawnPosition);
+        AStarNode WallNode = MapDirector.Instance.aStarGrid.GetNodeFromWorld(towerSpawnPosition);
 
         if (WallNode.isBuildTower)
         {
@@ -188,7 +188,7 @@ public class TowerSpawner : MonoBehaviour
                     TowerWeapon uptowerWeapon = upTower.GetComponent<TowerWeapon>();
                     Tower upTowerScript = upTower.GetComponent<Tower>();
                     uptowerWeapon.SetUp(this, enemySpawner);
-                    upTowerScript.SetUp(this, MapDirector.Instance.AStarGrid_.GetNodeFromWorld(tileCenterPosition));
+                    upTowerScript.SetUp(this, MapDirector.Instance.aStarGrid.GetNodeFromWorld(tileCenterPosition));
 
                     upTower.transform.position = tileCenterPosition;
 

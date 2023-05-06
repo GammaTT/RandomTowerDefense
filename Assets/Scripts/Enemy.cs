@@ -7,7 +7,8 @@ public class Enemy : MonoBehaviour
 {
     public List<AStarNode> EnemyPath;
 
-    public float PathUpdateDelay = 0.5f;
+    public float RotateSpeed = 0.1f;
+    private float PathUpdateDelay = 0.5f;
     private float LastPathUpdate;
     private EnemySpawner enemySpawner;
 
@@ -35,6 +36,7 @@ public class Enemy : MonoBehaviour
             SetPath();
         }
 
+        transform.Rotate(Vector3.forward * -RotateSpeed);
     }
 
     public void SetPath()

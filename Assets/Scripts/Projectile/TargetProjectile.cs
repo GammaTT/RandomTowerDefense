@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Projectile : MonoBehaviour
+public class TargetProjectile : MonoBehaviour
 {
     private Transform target;
     //private	int			damage;

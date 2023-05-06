@@ -231,7 +231,7 @@ public class TowerWeapon : MonoBehaviour
         // 생성된 발사체에게 공격대상(attackTarget) 정보 제공
         // 공격력 = 타워 기본 공격력 + 버프에 의해 추가된 공격력
         float damage = towerData.weapon[level].damage; // +Adddamage
-        clone.GetComponent<Projectile>().Setup(attackTarget, damage);
+        clone.GetComponent<TargetProjectile>().Setup(attackTarget, damage);
     }
 
     private void EnableLaser()

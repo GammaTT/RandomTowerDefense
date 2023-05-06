@@ -6,7 +6,6 @@ public class ChainLightning : MonoBehaviour
 {
     private int segments = 5;
     private int chainCount = 3;
-    private float lightningDuration = 0.2f;
     private float currentTime;
     private float damage = 1;
     private float searchRadius = 3.0f;

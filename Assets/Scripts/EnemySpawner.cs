@@ -12,13 +12,14 @@ public class EnemySpawner : MonoBehaviour
     private float SpawnDelay;
     private float LastSpawnTime;
     private int currentEnemyCount;
-
+    private Wave currentWave;
+    private int currentWaveCount;
     public List<Enemy> enemyList;
     // Start is called before the first frame update
     void Start()
     {
         enemyList = new List<Enemy>();
-        StartCoroutine("SpawnEnemy");
+        //StartCoroutine("SpawnEnemy");
     }
 
     // Update is called once per frame
@@ -39,16 +40,27 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
+
+    public void StartWave(Wave wave)
+    {
+        currentWave = wave;
+        currentWaveCount = wave.maxEnemyCount;
+        StartCoroutine("SpawnEnemy");
+    }
     private IEnumerator SpawnEnemy()
     {
-        while (true)
+        int spawnEnemyCount = 0;
+        while (spawnEnemyCount < currentWave.maxEnemyCount)
         {
-            GameObject enemyObject = Instantiate(Enemy01Prefab, transform.position, Quaternion.identity);
+            GameObject enemyObject = Instantiate(currentWave.enemyPrefabs[Random.Range(0, currentWave.enemyPrefabs.Length)],
+                transform.position, Quaternion.identity);
             Enemy enemy = enemyObject.GetComponent<Enemy>();
             enemy.SetUp(this);
             enemyList.Add(enemy);
             currentEnemyCount++;
-            yield return new WaitForSeconds(SpawnDelay);
+
+            spawnEnemyCount++;
+            yield return new WaitForSeconds(currentWave.spawnDelay);
             
             //break;
         }

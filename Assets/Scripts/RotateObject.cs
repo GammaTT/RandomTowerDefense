@@ -18,6 +18,5 @@ public class RotateObject : MonoBehaviour
     {
         transform.Rotate(Vector3.forward * -RotateSpeed);
 
-
     }
 }

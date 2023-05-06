@@ -14,6 +14,8 @@ public class TowerDataViewer : MonoBehaviour
     private TextMeshProUGUI textRate;
     [SerializeField]
     private TextMeshProUGUI textRange;
+    [SerializeField]
+    private TextMeshProUGUI textLevel;
 
     private TowerWeapon currentTowerWeapon;
     private void Awake()
@@ -51,6 +53,7 @@ public class TowerDataViewer : MonoBehaviour
     public void UpdateTowerData()
     {
         towerImage.sprite = currentTowerWeapon.towerSprite;
+        textLevel.text = "Level : " + (currentTowerWeapon.level + 1);
         textDamage.text = "Damage : " + currentTowerWeapon.damage;
         textRate.text = "Rate : " + currentTowerWeapon.rate;
         textRange.text = "Range : " + currentTowerWeapon.range;

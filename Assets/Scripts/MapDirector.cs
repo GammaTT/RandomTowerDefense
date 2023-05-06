@@ -7,9 +7,10 @@ public class MapDirector : MonoBehaviour
 {
     static public MapDirector Instance;
 
-    public AStarGrid AStarGrid_;
+    public AStarGrid aStarGrid;
     public Tilemap WalkableMap;
     public Tilemap WallMap;
+    public Tilemap NonWallMap;
     public Tile WallTile;
     public Tile WalkableTile;
 
@@ -31,8 +32,8 @@ public class MapDirector : MonoBehaviour
     {
         Instance = this;
         //AStarGird_ = GetComponent<AStarGrid>();
-        AStarGrid_ = new AStarGrid();
-        AStarGrid_.SetUp(WalkableMap, WallMap);
+        aStarGrid = new AStarGrid();
+        aStarGrid.SetUp(WalkableMap, WallMap);
     }
 
     // Start is called before the first frame update
@@ -47,16 +48,8 @@ public class MapDirector : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            AStarNode Wall = AStarGrid_.GetNodeFromWorld(worldPos);
+            AStarNode Wall = aStarGrid.GetNodeFromWorld(worldPos);
             Vector3Int cellPosition = WalkableMap.WorldToCell(worldPos);
-
-/*            if (CheckPath(cellPosition) == false)
-            {
-                Debug.Log("Can not build wall tile there");
-                WallMap.SetTile(cellPosition, null);
-                WalkableMap.SetTile(cellPosition, WalkableTile);
-                return;
-            }*/
 
             if (CheckPath(Wall) == false)
             {
@@ -69,12 +62,17 @@ public class MapDirector : MonoBehaviour
             {
                 return;
             }
+            else if (NonWallMap.HasTile(cellPosition))
+            {
+                Debug.Log("nonwallmap");
+                return;
+            }
 
             WallMap.SetTile(cellPosition, WallTile);
             WalkableMap.SetTile(cellPosition, null);
 
-            AStarGrid_.ResetNode();
-            AStarGrid_.CreateGrid();
+            aStarGrid.ResetNode();
+            aStarGrid.CreateGrid();
             enemySpawner.CheckPathForAllEnemy();
             showPath.ShowPath();
         }
@@ -88,11 +86,11 @@ public class MapDirector : MonoBehaviour
     {
         WallNode.isWalkable = false;
 
-        AStarNode StartNode = AStarGrid_.GetNodeFromWorld(enemySpawner.gameObject.transform.position);
-        AStarNode EndNode = AStarGrid_.GetNodeFromWorld(Goal.transform.position);
+        AStarNode StartNode = aStarGrid.GetNodeFromWorld(enemySpawner.gameObject.transform.position);
+        AStarNode EndNode = aStarGrid.GetNodeFromWorld(Goal.transform.position);
 
         List<AStarNode> Path = new List<AStarNode>();
-        Path = AStarGrid_.pathfinder.CreatePath(StartNode, EndNode);
+        Path = aStarGrid.pathfinder.CreatePath(StartNode, EndNode);
 
         if (Path == null)
         {
@@ -108,14 +106,14 @@ public class MapDirector : MonoBehaviour
         WallMap.SetTile(cellPosition, WallTile);
         WalkableMap.SetTile(cellPosition, null);
 
-        AStarGrid_.ResetNode();
-        AStarGrid_.CreateGrid();
+        aStarGrid.ResetNode();
+        aStarGrid.CreateGrid();
 
-        AStarNode StartNode = AStarGrid_.GetNodeFromWorld(enemySpawner.gameObject.transform.position);
-        AStarNode EndNode = AStarGrid_.GetNodeFromWorld(Goal.transform.position);
+        AStarNode StartNode = aStarGrid.GetNodeFromWorld(enemySpawner.gameObject.transform.position);
+        AStarNode EndNode = aStarGrid.GetNodeFromWorld(Goal.transform.position);
 
         List <AStarNode> Path = new List <AStarNode>();
-        Path = AStarGrid_.pathfinder.CreatePath(StartNode, EndNode);
+        Path = aStarGrid.pathfinder.CreatePath(StartNode, EndNode);
 
         if (Path == null)
         {
@@ -129,18 +127,13 @@ public class MapDirector : MonoBehaviour
     public List<AStarNode> SetPathFromPosition(Transform StartPosition)
     {
 
-        AStarNode StartNode = AStarGrid_.GetNodeFromWorld(StartPosition.position);
-        AStarNode EndNode = AStarGrid_.GetNodeFromWorld(Goal.transform.position);
+        AStarNode StartNode = aStarGrid.GetNodeFromWorld(StartPosition.position);
+        AStarNode EndNode = aStarGrid.GetNodeFromWorld(Goal.transform.position);
 
         StartToEndPath = new List<AStarNode>();
         //StartToEndPath = new List<AStarNode>(AStarGrid_.pathfinder.CreatePath(StartNode, EndNode));
 
-        StartToEndPath = AStarGrid_.pathfinder.CreatePath(StartNode, EndNode);
-
-/*        if (StartToEndPath == null)
-        {
-            Debug.Log("fucking null");
-        }*/
+        StartToEndPath = aStarGrid.pathfinder.CreatePath(StartNode, EndNode);
 
         for (int i = 0; i < StartToEndPath.Count; i++)
         {

@@ -62,8 +62,6 @@ public class AStarPathfind
                     tempNode = tempNode.parent;
                 }
                 path.Reverse();
-                //Debug.Log("In Path Count : " + path.Count);
-
 
                 return path;
             }
@@ -93,6 +91,8 @@ public class AStarPathfind
                 }
             }
         }
+
+        //길 찾기에 실패하면 null을 리턴한다.
         return null;
     }
 

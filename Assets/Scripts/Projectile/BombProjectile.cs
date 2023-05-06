@@ -15,7 +15,7 @@ public class BombProjectile : MonoBehaviour
     private float bombTime = 0.5f;
     private float bombStartDistance = 0.5f;
     private bool isExploding = false;
-    private bool isBomb = false;
+    //private bool isBomb = false;
     private SpriteRenderer spriteRenderer;
 
     [SerializeField]
@@ -48,7 +48,7 @@ public class BombProjectile : MonoBehaviour
                 StartCoroutine("Bomb");
             }
         }
-        else if (target == null)              // 여러 이유로 target이 사라지면
+        else if (target == null)
         {
             // 발사체 오브젝트 삭제
             Destroy(gameObject);
@@ -81,17 +81,17 @@ public class BombProjectile : MonoBehaviour
             spriteRenderer.color = color;
             if (1.0f <= u)
             {
-                isBomb = true;
+                //isBomb = true;
                 // 폭발 반경 내의 적에게 데미지 적용
-                // overlapcircle is big than shown object size so * 0.5f to right blance
+                // OverlapCircle의 크기가 보이는 오브젝트의 크기보다 크기 때문에 0.5를 곱해서 줄인다.
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, bombRadius * 0.5f);
                 foreach (Collider2D col in colliders)
                 {
-                    if (col.CompareTag("Enemy"))
+                    if (col != null && col.CompareTag("Enemy"))
                     {
                         spriteRenderer.color = new Color(0f, 0f, 0f, 0f);
-                        bombParticle.Play();
                         col.GetComponent<EnemyHp>().TakeDamage(damage);
+                        bombParticle.Play();
                         yield return new WaitForSeconds(bombTime);
                         Destroy(gameObject);
                     }
@@ -103,15 +103,3 @@ public class BombProjectile : MonoBehaviour
         }
     }
 }
-
-
-/*
- * File : Projectile.cs
- * Desc
- *	: 타워가 발사하는 기본 발사체에 부착
- *	
- * Functions
- *	: Update() - 타겟이 존재하면 타겟 방향으로 이동하고, 타겟이 존재하지 않으면 발사체 삭제
- *	: OnTriggerEnter2D() - 타겟으로 설정된 적과 부딪혔을 때 둘다 삭제
- *	
- */

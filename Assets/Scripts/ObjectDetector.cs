@@ -15,10 +15,9 @@ public class ObjectDetector : MonoBehaviour
     private EnemySpawner enemySpawner;
 
     private Camera mainCamera;
-    private Ray2D ray2D;
     private RaycastHit2D hit;
-    private Transform hitTransform = null; // 임시 저장
-    private Transform preiviousHittransfrom = null; //직전 마우스 타일
+    //private Transform hitTransform = null; // 임시 저장
+    //private Transform preiviousHittransfrom = null; //직전 마우스 타일
 
     private void Awake()
     {
@@ -51,7 +50,7 @@ public class ObjectDetector : MonoBehaviour
                 return;
             }
 
-            hitTransform = hit.transform;
+            //hitTransform = hit.transform;
 
             if (hit.transform.CompareTag("Tower"))
             {
