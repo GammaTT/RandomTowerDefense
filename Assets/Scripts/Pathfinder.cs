@@ -6,8 +6,8 @@ public class Pathfinder : MonoBehaviour
 {
     private List<AStarNode> Path;
     private float nodeArriveDistance = 0.1f;
-    private float pathFindDelay = 5.0f;
-    private float lastPathFindTime;
+    //private float pathFindDelay = 5.0f;
+    //private float lastPathFindTime;
     private float nextNodeMoveTime = 0.05f;
     private float currentTime;
     private TrailRenderer trailRenderer;
@@ -22,7 +22,7 @@ public class Pathfinder : MonoBehaviour
         currentTime = Time.time;
         SetPath();
         StartCoroutine("MoveToPath");
-        lastPathFindTime = currentTime;
+        //lastPathFindTime = currentTime;
     }
 
     // Update is called once per frame
@@ -39,7 +39,7 @@ public class Pathfinder : MonoBehaviour
         trailRenderer.Clear();
         trailRenderer.enabled = false;
 
-        lastPathFindTime = Time.time;
+        //lastPathFindTime = Time.time;
         transform.position = MapDirector.Instance.GetEnemySpanwerPosition();
 
         StopCoroutine("MoveToPath");

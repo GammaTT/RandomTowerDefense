@@ -10,6 +10,10 @@ public class EnemySpawner : MonoBehaviour
     private GameObject Enemy01Prefab;
     [SerializeField]
     private float SpawnDelay;
+    [SerializeField]
+    private WaveData waveSystem;
+
+
     private float LastSpawnTime;
     private int currentEnemyCount;
     private Wave currentWave;
@@ -64,6 +68,8 @@ public class EnemySpawner : MonoBehaviour
             
             //break;
         }
+
+        waveSystem.FinishWave();
     }
 
     public void DestroyEnemy(EnemyDestroyType type, Enemy enemy, int gold)
@@ -87,5 +93,7 @@ public class EnemySpawner : MonoBehaviour
         enemyList.Remove(enemy);
         // 적 오브젝트 삭제
         Destroy(enemy.gameObject);
+
+        
     }
 }

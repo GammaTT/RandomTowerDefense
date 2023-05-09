@@ -8,19 +8,19 @@ public class Enemy : MonoBehaviour
 {
     public List<AStarNode> EnemyPath;
 
-    public float RotateSpeed = 0.1f;
-    private float PathUpdateDelay = 1f;
+    public float rotateSpeed = 0.1f;
+    //private float PathUpdateDelay = 1f;
     private float LastPathUpdate;
     private EnemySpawner enemySpawner;
 
     [SerializeField]
     private int gold = 10;
     [SerializeField]
-    private float MoveSpeed = 2.0f;
+    private float moveSpeed = 2.0f;
 
 
     private float currentTime;
-    private float nextNodeMoveTime = 0.5f;
+    private float nextNodeMoveTime = 1.0f;
     private float nodeArriveDistance = 0.1f;
     public void SetUp(EnemySpawner enemySpawner)
     {
@@ -32,6 +32,9 @@ public class Enemy : MonoBehaviour
         EnemyPath = new List<AStarNode>();
         LastPathUpdate = Time.time;
         SetPath();
+
+        //nextNodeMoveTime 기본은 1 MoveSpeed가 빨라 질때마다 점점 줄어듬
+        nextNodeMoveTime *= (1 / moveSpeed);
     }
 
     // Update is called once per frame
@@ -43,7 +46,7 @@ public class Enemy : MonoBehaviour
             SetPath();
         }*/ //벽을 설치할 때만 새로 경로 설정으로 바꿈
 
-        transform.Rotate(Vector3.forward * -RotateSpeed);
+        transform.Rotate(Vector3.forward * -rotateSpeed);
     }
 
     public void SetPath()
@@ -61,14 +64,16 @@ public class Enemy : MonoBehaviour
     {
         foreach (var node in EnemyPath)
         {
-            //벽을 설치할때 첫번째 노드에서 버벅거리기 때문에 다음 반복으로 넘어가기
+            //벽을 설치할때 첫번째 노드(타일)에서 버벅거리기 때문에 다음 반복으로 넘어가기
             if (node == EnemyPath[0])
             {
                 continue;
             }
+
             Vector2 targetPositon = new Vector2(node.xPos, node.yPos);
             Vector2 currentPosition = transform.position;
             currentTime = Time.time;
+
             while (true)
             {
                 Vector3 move = (targetPositon - currentPosition).normalized * Time.deltaTime;
@@ -88,8 +93,8 @@ public class Enemy : MonoBehaviour
 
         }
 
-  /*      Debug.Log("enemypath : " + EnemyPath[0].xPos + " " + EnemyPath[0].yPos);
-
+        //원래 이동했던 방법. 패스 파인더와 같게 하기 위해 바꿈
+        /*
         for (int i = 1; i < EnemyPath.Count; i++)
         {
             var node = EnemyPath[i];

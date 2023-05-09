@@ -29,7 +29,7 @@ public class TowerSpawner : MonoBehaviour
     [SerializeField]
     private Tilemap WallMap;
 
-    private float towerCellGoldPercent = 0.8f;
+    //private float towerCellGoldPercent = 0.8f;
     private List<GameObject> towerList;
     private int towerCombineCount = 3;
     // Start is called before the first frame update

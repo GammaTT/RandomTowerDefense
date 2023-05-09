@@ -47,13 +47,20 @@ public class MapDirector : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
+            if (enemySpawner.enemyList.Count > 0)
+            {
+                Debug.Log("적이 있을 때는 벽 설치 불가");
+                return;
+            }
+
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             Vector2 raycasyPoint = worldPos;
             RaycastHit2D hit = Physics2D.Raycast(raycasyPoint, Vector2.zero);
+
             if (hit.transform == null || !hit.transform.CompareTag("WalkableMap"))
             {
-                Debug.Log("There is non walkabletilemap fuck you");
+                Debug.Log("필드 안에 설치해야됩니다.");
                 return;
             }
 

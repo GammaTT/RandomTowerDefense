@@ -105,8 +105,26 @@ public class TowerWeapon : MonoBehaviour
 
             if (attackTarget != null)
             {
-                //string weaponTypeString = 
-                if (weaponType == WeaponType.Cannon || weaponType == WeaponType.Bomb)
+                switch(weaponType)
+                {
+                    case WeaponType.Cannon:
+                    case WeaponType.Bomb:
+                        ChangeState(WeaponState.TryAttackCannon);
+                        break;
+
+                    case WeaponType.ChainLightning:
+                        ChangeState(WeaponState.TryAttackChainLightning);
+                        break;
+
+                    case WeaponType.Laser:
+                        ChangeState(WeaponState.TryAttackLaser);
+                        break;
+
+                    case WeaponType.MultiWayShooting:
+                        ChangeState(WeaponState.TryAttackMultiShooting);
+                        break;
+                }
+/*                if (weaponType == WeaponType.Cannon || weaponType == WeaponType.Bomb)
                 {
                     ChangeState(WeaponState.TryAttackCannon);
                 }
@@ -121,7 +139,7 @@ public class TowerWeapon : MonoBehaviour
                 else if (weaponType == WeaponType.MultiWayShooting)
                 {
                     ChangeState(WeaponState.TryAttackMultiShooting);
-                }
+                }*/
             }
 
             yield return new WaitForEndOfFrame();
