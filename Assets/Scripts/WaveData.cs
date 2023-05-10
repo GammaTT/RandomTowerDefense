@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System.IO;
 public class WaveData : MonoBehaviour
 {
     [SerializeField]
@@ -30,9 +30,12 @@ public class WaveData : MonoBehaviour
     [SerializeField]
     private Sprite stopGameBlackButton;
 
+    public Wave[] waveboo;
     private void Start()
     {
         textWaveCount.text = "Wave : " + 1;
+        SaveToJson();
+        //LoadWaves();
     }
     public void StartWave()
     {
@@ -61,6 +64,33 @@ public class WaveData : MonoBehaviour
         startGameButton.sprite = startGameWhiteButton;
         stopGameButton.sprite = stopGameBlackButton;
         Time.timeScale = 0;
+    }
+
+    public void SaveToJson()
+    {
+        Wave[] boo = new Wave[waves.Length];
+        boo = waves;
+        string json = JsonUtility.ToJson(boo, true);
+        string filePath = Path.Combine(Application.dataPath, "Resource", "waves.json");
+        //File.WriteAllText(filePath, json);
+
+        Debug.Log(json);
+
+        //StreamWriter file = new StreamWriter(filePath, true);
+        //file.Write(boo);
+        //file.Close();
+    }
+
+    private void LoadWaves()
+    {
+        //string filePath = Path.Combine(Application.streamingAssetsPath, "waves.json");
+        string filePath = Path.Combine(Application.dataPath, "Resource", "waves.json");
+
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            waveboo = JsonUtility.FromJson<Wave[]>(json);
+        }
     }
 }
 

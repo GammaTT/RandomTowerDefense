@@ -7,14 +7,16 @@ public enum WeaponType
     Cannon = 0, 
     Laser, Slow, Buff, 
     ChainLightning, Bomb, 
-    MultiWayShooting
+    MultiWayShooting,
+    MultiBomb
 }
 
 public enum WeaponState 
 { 
     SearchTarget = 0, TryAttackCannon,
     TryAttackLaser, TryAttackChainLightning,
-    TryAttackMultiShooting
+    TryAttackMultiShooting,
+    TryAttackMultiBomb
 }
 public class TowerWeapon : MonoBehaviour
 {
@@ -34,6 +36,9 @@ public class TowerWeapon : MonoBehaviour
     [Header("MultiShoot")]
     [SerializeField]
     private GameObject projectilePrefab;
+    [Header("MultiBomb")]
+    [SerializeField]
+    private GameObject bombPrefab;
 
     [Header("Laser")]
     [SerializeField]
@@ -123,6 +128,10 @@ public class TowerWeapon : MonoBehaviour
                     case WeaponType.MultiWayShooting:
                         ChangeState(WeaponState.TryAttackMultiShooting);
                         break;
+
+                    case WeaponType.MultiBomb:
+                        ChangeState(WeaponState.TryAttackMultiBomb);
+                        break;
                 }
 /*                if (weaponType == WeaponType.Cannon || weaponType == WeaponType.Bomb)
                 {
@@ -182,6 +191,23 @@ public class TowerWeapon : MonoBehaviour
         }
 
         return true;
+    }
+
+    private IEnumerator TryAttackMultiBomb()
+    {
+        while (true)
+        {
+            if (IsPossibleToAttackTarget() == false)
+            {
+                ChangeState(WeaponState.SearchTarget);
+                break;
+            }
+
+            SpawnMultiBomb();
+
+            yield return new WaitForSeconds(towerData.weapon[level].rate);
+
+        }
     }
 
     private IEnumerator TryAttackMultiShooting()
@@ -267,7 +293,24 @@ public class TowerWeapon : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
     }
+    private void SpawnMultiBomb()
+    {
+        Vector2 bombDirectoin = (attackTarget.transform.position - transform.position).normalized;
+        Vector2 towerPositon = transform.position;
+        float bombRange = 5.0f;
+        int bombCount = 5;
+        Vector2 bombVector = bombDirectoin * bombRange;
 
+        Vector2[] bombPosition = new Vector2[bombCount];
+
+        for(int i = 0; i < bombCount; i++)
+        {
+            bombPosition[i] = towerPositon + bombVector * ((i + 1) * (1.0f / bombCount));
+            GameObject bombs = Instantiate(bombPrefab, bombPosition[i], Quaternion.identity);
+            bombs.GetComponent<Bomb>().SetUp(towerData.weapon[level].damage);
+        }
+
+    }
     private void SpawnMultiProjectile()
     {
         Vector3 []targetMove = new Vector3[3] ;
