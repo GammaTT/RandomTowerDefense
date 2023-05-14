@@ -282,12 +282,19 @@ MonoBehaviour:
   towerData: {fileID: 11400000, guid: bfd7c426bda30f247aa8e594ea43e1c3, type: 2}
   spawnPoint: {fileID: 3084227733579070962}
   weaponType: 4
-  projectilePrefab: {fileID: 3988982820199238153, guid: 217811d62615ae048819a02cb332d94e, type: 3}
+  targetProjectilePrefab: {fileID: 0}
   bombProjectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 3988982820199238153, guid: 217811d62615ae048819a02cb332d94e, type: 3}
+  bombPrefab: {fileID: 0}
   lineRenderer: {fileID: 0}
   weaponState: 0
+  towerGrade: 2
   level: 0
   grade: 2
+  upGradeGold: 0
+  damage: 0
+  range: 0
+  rate: 0
 --- !u!114 &3472812604892524593
 MonoBehaviour:
   m_ObjectHideFlags: 0

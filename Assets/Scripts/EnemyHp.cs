@@ -3,17 +3,18 @@ using UnityEngine;
 
 public class EnemyHp : MonoBehaviour
 {
-    [SerializeField]
     private float maxHP;          // 최대 체력
     private float currentHP;      // 현재 체력
     private bool isDie = false;  // 적이 사망 상태이면 isDie를 true로 설정
+
     private Enemy enemy;
     private SpriteRenderer spriteRenderer;
-
-    private void Awake()
+    
+    private void Start()
     {
-        currentHP = maxHP;            // 현재 체력을 최대 체력과 같게 설정
         enemy = GetComponent<Enemy>();
+        maxHP = enemy.enemyData.maxHp;
+        currentHP = maxHP;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 

@@ -1,7 +1,10 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 using System.IO;
+using System.Collections.Generic;
+
 public class WaveData : MonoBehaviour
 {
     [SerializeField]
@@ -10,9 +13,12 @@ public class WaveData : MonoBehaviour
     private EnemySpawner enemySpawner;
     [SerializeField]
     private TextMeshProUGUI textWaveCount;
+    [SerializeField]
+    private TextMeshProUGUI textCurrentScore;
 
     private int currentWaveIndex = 0;
 
+    public ScoreSystem scoreSystem;
     // 웨이브 정보 출력을 위한 Get 프로퍼티 (현재 웨이브, 총 웨이브)
     public int MaxWave => waves.Length;
 
@@ -30,11 +36,15 @@ public class WaveData : MonoBehaviour
     [SerializeField]
     private Sprite stopGameBlackButton;
 
-    public Wave[] waveboo;
+
+    private List<int> scoreData = new List<int>();
+
     private void Start()
     {
         textWaveCount.text = "Wave : " + 1;
-        SaveToJson();
+        textCurrentScore.text = "Score : " + 0;
+        scoreSystem = new ScoreSystem();
+        scoreSystem.Setup(textCurrentScore);
         //LoadWaves();
     }
     public void StartWave()
@@ -66,34 +76,24 @@ public class WaveData : MonoBehaviour
         Time.timeScale = 0;
     }
 
+    public void FinishGame()
+    {
+        scoreSystem.AddThisGameScore();
+    }
     public void SaveToJson()
     {
-        Wave[] boo = new Wave[waves.Length];
-        boo = waves;
-        string json = JsonUtility.ToJson(boo, true);
-        string filePath = Path.Combine(Application.dataPath, "Resource", "waves.json");
-        //File.WriteAllText(filePath, json);
-
-        Debug.Log(json);
-
-        //StreamWriter file = new StreamWriter(filePath, true);
-        //file.Write(boo);
-        //file.Close();
+        
     }
 
     private void LoadWaves()
     {
-        //string filePath = Path.Combine(Application.streamingAssetsPath, "waves.json");
-        string filePath = Path.Combine(Application.dataPath, "Resource", "waves.json");
-
-        if (File.Exists(filePath))
-        {
-            string json = File.ReadAllText(filePath);
-            waveboo = JsonUtility.FromJson<Wave[]>(json);
-        }
+        
     }
 }
 
+
+//웨이브 시스템을 인스펙터에서 설정하게 그냥 놔둘까
+//제이순 파일로 읽어올까, 스크립터블 오브젝트도 괜찮을거 같다.
 [System.Serializable]
 public struct Wave
 {

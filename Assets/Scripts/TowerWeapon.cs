@@ -51,17 +51,23 @@ public class TowerWeapon : MonoBehaviour
     private TowerSpawner towerSpawner;
     private EnemySpawner enemySpawner;
 
-    public Sprite towerSprite => towerData.weapon[level].sprite; // 현재 레벨의 타워 이미지로의 람다함수
+    public TowerGrade towerGrade;
+    public Sprite towerSprite => towerData.sprite;
     public int level = 1; // 이것도 나중에 돼는지 확인 해야됌
     public int grade;
-    public float damage => towerData.weapon[level].damage;
-    public float range => towerData.weapon[level].range;
-    public float rate => towerData.weapon[level].rate;
+    public int upGradeGold;
+    public int useGoldToUpGrade = 0;
+    public float damage;
+    public float range;
+    public float rate;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.damage = towerData.weapon.damage;
+        this.range = towerData.weapon.range;
+        this.rate = towerData.weapon.rate;
+        upGradeGold = (int)towerGrade * Constants.upGradeGoldMulti;
     }
 
     public void SetUp(TowerSpawner towerSpawner, EnemySpawner enemySpawner)
@@ -84,10 +90,11 @@ public class TowerWeapon : MonoBehaviour
 
     public bool UPGrade()
     {
-/*        towerData.weapon[level].damage += 5;
-        towerData.weapon[level].range += 5;
-        towerData.weapon[level].rate += 5;*/
-
+        useGoldToUpGrade += upGradeGold;
+        upGradeGold += (int)towerGrade;
+        damage += towerData.weaponUpGradeValue.damage;
+        range += towerData.weaponUpGradeValue.range;
+        rate += towerData.weaponUpGradeValue.rate;
         level++;
 
         return true;
@@ -164,7 +171,7 @@ public class TowerWeapon : MonoBehaviour
         {
             float distance = Vector3.Distance(enemySpawner.enemyList[i].transform.position, transform.position);
             // 현재 검사중인 적과의 거리가 공격범위 내에 있고, 현재까지 검사한 적보다 거리가 가까우면
-            if (distance <= towerData.weapon[level].range && distance <= closestDistSqr)
+            if (distance <= range && distance <= closestDistSqr)
             {
                 closestDistSqr = distance;
                 attackTarget = enemySpawner.enemyList[i].transform;
@@ -184,7 +191,7 @@ public class TowerWeapon : MonoBehaviour
 
         // target이 공격 범위 안에 있는지 검사 (공격 범위를 벗어나면 새로운 적 탐색)
         float distance = Vector3.Distance(attackTarget.position, transform.position);
-        if (distance > towerData.weapon[level].range)
+        if (distance > range)
         {
             attackTarget = null;
             return false;
@@ -205,7 +212,7 @@ public class TowerWeapon : MonoBehaviour
 
             SpawnMultiBomb();
 
-            yield return new WaitForSeconds(towerData.weapon[level].rate);
+            yield return new WaitForSeconds(rate);
 
         }
     }
@@ -222,7 +229,7 @@ public class TowerWeapon : MonoBehaviour
 
             SpawnMultiProjectile();
 
-            yield return new WaitForSeconds(towerData.weapon[level].rate);
+            yield return new WaitForSeconds(rate);
 
         }
     }
@@ -236,12 +243,12 @@ public class TowerWeapon : MonoBehaviour
         else
         {
             ChainLightning lightning = GetComponent<ChainLightning>();
-            lightning.SetUp(attackTarget.gameObject, towerData.weapon[level].damage);
+            lightning.SetUp(attackTarget.gameObject, damage);
 
             //try-catch use?
             lightning.ChainLightningStart();
  
-            yield return new WaitForSeconds(towerData.weapon[level].rate);
+            yield return new WaitForSeconds(rate);
             ChangeState(WeaponState.SearchTarget);
         }
     }
@@ -254,7 +261,7 @@ public class TowerWeapon : MonoBehaviour
                 ChangeState(WeaponState.SearchTarget); 
                 break;
             }
-            yield return new WaitForSeconds(towerData.weapon[level].rate);
+            yield return new WaitForSeconds(rate);
 
             if (weaponType == WeaponType.Cannon)
             {
@@ -281,7 +288,7 @@ public class TowerWeapon : MonoBehaviour
                 DisableLaser();
 
                 //enable and Research cooltime
-                yield return new WaitForSeconds(towerData.weapon[level].rate);
+                yield return new WaitForSeconds(rate);
 
                 ChangeState(WeaponState.SearchTarget);
                 break;
@@ -307,7 +314,7 @@ public class TowerWeapon : MonoBehaviour
         {
             bombPosition[i] = towerPositon + bombVector * ((i + 1) * (1.0f / bombCount));
             GameObject bombs = Instantiate(bombPrefab, bombPosition[i], Quaternion.identity);
-            bombs.GetComponent<Bomb>().SetUp(towerData.weapon[level].damage);
+            bombs.GetComponent<Bomb>().SetUp(damage);
         }
 
     }
@@ -319,7 +326,7 @@ public class TowerWeapon : MonoBehaviour
         targetMove[2] = Quaternion.AngleAxis(-45f, Vector3.forward) * targetMove[0];
 
         GameObject [] projectileClones = new GameObject[3];
-        float damage = towerData.weapon[level].damage; //+add damage
+        float damage = this.damage; //+add damage
 
         for (int i = 0; i < projectileClones.Length; i++)
         {
@@ -332,7 +339,7 @@ public class TowerWeapon : MonoBehaviour
         GameObject clone = Instantiate(bombProjectilePrefab, spawnPoint.position, Quaternion.identity);
         // 생성된 발사체에게 공격대상(attackTarget) 정보 제공
         // 공격력 = 타워 기본 공격력 + 버프에 의해 추가된 공격력
-        float damage = towerData.weapon[level].damage; // +Adddamage
+        float damage = this.damage; // +Adddamage
         clone.GetComponent<BombProjectile>().Setup(attackTarget, damage);
     }
     private void SpawnTargetProjectile()
@@ -340,7 +347,7 @@ public class TowerWeapon : MonoBehaviour
         GameObject clone = Instantiate(targetProjectilePrefab, spawnPoint.position, Quaternion.identity);
         // 생성된 발사체에게 공격대상(attackTarget) 정보 제공
         // 공격력 = 타워 기본 공격력 + 버프에 의해 추가된 공격력
-        float damage = towerData.weapon[level].damage; // +Adddamage
+        float damage = this.damage; // +Adddamage
         clone.GetComponent<TargetProjectile>().Setup(attackTarget, damage);
     }
 
@@ -360,7 +367,7 @@ public class TowerWeapon : MonoBehaviour
     {
         Vector3 direction = attackTarget.position - spawnPoint.position;
         //RaycastHit2D[] hit = Physics2D.RaycastAll(spawnPoint.position, direction, towerData.weapon[level].range, targetLayer);
-        RaycastHit2D[] hit = Physics2D.RaycastAll(spawnPoint.position, direction, towerData.weapon[level].range);
+        RaycastHit2D[] hit = Physics2D.RaycastAll(spawnPoint.position, direction, this.range);
 
         // 같은 방향으로 여러 개의 광선을 쏴서 그 중 현재 attackTarget과 동일한 오브젝트를 검출
         for (int i = 0; i < hit.Length; ++i)
@@ -375,7 +382,7 @@ public class TowerWeapon : MonoBehaviour
                 //hitEffect.position = hit[i].point;
                 // 적 체력 감소 (1초에 damage만큼 감소)
                 // 공격력 = 타워 기본 공격력 + 버프에 의해 추가된 공격력
-                float damage = towerData.weapon[level].damage; // + AddedDamage;
+                float damage = this.damage; // + AddedDamage;
                 attackTarget.GetComponent<EnemyHp>().TakeDamage(damage * Time.deltaTime);
             }
         }

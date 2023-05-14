@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dad5fb36a2ec854781eb0b9ac5edbcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerData: {fileID: 11400000, guid: e77b966bf59282c44ac56f57de87d4f7, type: 2}
+  towerData: {fileID: 11400000, guid: a35b75bd206dc7c4ba256c4fca1c67c2, type: 2}
   spawnPoint: {fileID: 3084227733579070962}
   weaponType: 7
   targetProjectilePrefab: {fileID: 0}
@@ -155,8 +155,13 @@ MonoBehaviour:
   bombPrefab: {fileID: 5411871193828641510, guid: 1e663490c306c4c428369df844d325f9, type: 3}
   lineRenderer: {fileID: 0}
   weaponState: 0
+  towerGrade: 3
   level: 0
-  grade: 2
+  grade: 3
+  upGradeGold: 0
+  damage: 0
+  range: 0
+  rate: 0
 --- !u!58 &3084227731996547670
 CircleCollider2D:
   m_ObjectHideFlags: 0

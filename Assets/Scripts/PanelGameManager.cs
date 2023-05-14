@@ -8,7 +8,6 @@ using UnityEngine.UIElements;
 
 public class PanelGameManager : MonoBehaviour
 {
-    private int randomTowerSpawnGold = 1;
     [SerializeField]
     private Player player;
     [SerializeField]
@@ -55,17 +54,18 @@ public class PanelGameManager : MonoBehaviour
         {
             hit = Physics2D.Raycast(MousePosition, Vector2.zero);
 
+            //1레벨 타워 랜덤 생성
             if (isTowerSpawnMode)
             {
-                if (player.gold > randomTowerSpawnGold)
+                if (player.gold >= Constants.spawnRandomTowerGold)
                 {
                     if (hit.transform == null || !hit.transform.CompareTag("WallMap"))
                     {
                         return;
                     }
 
-                    towerSpawner.SpawnTower(MousePosition);
-                    player.gold -= randomTowerSpawnGold;
+                    towerSpawner.SpawnTower(MousePosition, TowerGrade.Grade1);
+                    player.gold -= Constants.spawnRandomTowerGold;
 
                 }
             }

@@ -8,7 +8,7 @@ public class ObjectDetector : MonoBehaviour
     [SerializeField]
     private TowerSpawner towerSpawner;
     [SerializeField]
-    private TowerDataViewer towerDataViewer;
+    private PanelTowerDataViewer towerDataViewer;
     [SerializeField]
     private TowerAttackRange towerAttackRange;
     [SerializeField]

@@ -10,24 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1fc33be49ddaf5d4e90c75ccc924b5ae, type: 3}
-  m_Name: Tower05MultiShoot
+  m_Name: 1Tower03MultiShoot
   m_EditorClassIdentifier: 
   towerPrefab: {fileID: 0}
   followTowerPrefab: {fileID: 0}
   weapon:
-  - sprite: {fileID: 21300000, guid: 4a868e28be12a6349a2742aa1909ed42, type: 3}
-    damage: 5
-    slow: 0
-    buff: 0
-    rate: 3
-    range: 4
-    cost: 10
-    sell: 5
-  - sprite: {fileID: 21300000, guid: 4a868e28be12a6349a2742aa1909ed42, type: 3}
-    damage: 7
-    slow: 0
-    buff: 0
-    rate: 3
-    range: 4
-    cost: 10
-    sell: 5
+    damage: 1
+    rate: 1
+    range: 3
+    sell: 0
+  weaponUpGradeValue:
+    damage: 1
+    rate: 0
+    range: 0
+  grade: 0
+  sprite: {fileID: 21300000, guid: c135213a5c54f2f4984eaa105cc33b20, type: 3}

@@ -6,7 +6,7 @@ using UnityEngine;
 public enum EnemyDestroyType { Kill = 0, Arrive }
 public class Enemy : MonoBehaviour
 {
-    public List<AStarNode> EnemyPath;
+    public List<AStarNode> enemyPath;
 
     public float rotateSpeed = 0.1f;
     //private float PathUpdateDelay = 1f;
@@ -16,7 +16,10 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private int gold = 10;
     [SerializeField]
+    private int scorePoint = 10;
+    [SerializeField]
     private float moveSpeed = 2.0f;
+    public EnemyData enemyData;
 
 
     private float currentTime;
@@ -25,16 +28,22 @@ public class Enemy : MonoBehaviour
     public void SetUp(EnemySpawner enemySpawner)
     {
         this.enemySpawner = enemySpawner;
+
     }
     // Start is called before the first frame update
     void Start()
     {
-        EnemyPath = new List<AStarNode>();
+        enemyPath = new List<AStarNode>();
+
+        this.gold = enemyData.gold;
+        this.moveSpeed = enemyData.moveSpeed;
+
         LastPathUpdate = Time.time;
         SetPath();
 
         //nextNodeMoveTime 기본은 1 MoveSpeed가 빨라 질때마다 점점 줄어듬
         nextNodeMoveTime *= (1 / moveSpeed);
+
     }
 
     // Update is called once per frame
@@ -53,7 +62,7 @@ public class Enemy : MonoBehaviour
     {
         StopCoroutine("Move");
 
-        EnemyPath = (MapDirector.Instance.SetPathFromPosition(transform));
+        enemyPath = (MapDirector.Instance.SetPathFromPosition(transform));
 
         StartCoroutine("Move");
 
@@ -62,10 +71,10 @@ public class Enemy : MonoBehaviour
 
     public IEnumerator Move()
     {
-        foreach (var node in EnemyPath)
+        foreach (var node in enemyPath)
         {
             //벽을 설치할때 첫번째 노드(타일)에서 버벅거리기 때문에 다음 반복으로 넘어가기
-            if (node == EnemyPath[0])
+            if (node == enemyPath[0])
             {
                 continue;
             }
@@ -133,14 +142,14 @@ public class Enemy : MonoBehaviour
     {
         // EnemySpawner에서 리스트로 적 정보를 관리하기 때문에 Destroy()를 직접하지 않고
         // EnemySpawner에게 본인이 삭제될 때 필요한 처리를 하도록 DestroyEnemy() 함수 호출
-        enemySpawner.DestroyEnemy(type, this, gold);
+        enemySpawner.DestroyEnemy(type, this, gold, scorePoint);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Goal")
         {
-            enemySpawner.DestroyEnemy(EnemyDestroyType.Arrive, this, gold);
+            enemySpawner.DestroyEnemy(EnemyDestroyType.Arrive, this, gold, scorePoint);
         }
     }
 }

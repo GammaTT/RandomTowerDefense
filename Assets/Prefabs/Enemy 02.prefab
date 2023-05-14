@@ -115,9 +115,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbbbc8f06ab57bb48b3bad0eefaa23ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotateSpeed: 0.1
+  rotateSpeed: 0.1
   gold: 10
-  MoveSpeed: 1
+  scorePoint: 10
+  moveSpeed: 2
+  enemyData: {fileID: 11400000, guid: a10d6d8ff73ccfa448c9ecbc0492595c, type: 2}
 --- !u!114 &4602826309727014391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,4 +132,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 692b1868f155df64895547025f604d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 10

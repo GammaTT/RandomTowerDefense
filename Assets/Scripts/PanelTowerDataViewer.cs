@@ -4,8 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TowerDataViewer : MonoBehaviour
+public class PanelTowerDataViewer : MonoBehaviour
 {
+    [SerializeField]
+    private Player player;
+
     [SerializeField]
     private Image towerImage;
     [SerializeField]
@@ -16,6 +19,8 @@ public class TowerDataViewer : MonoBehaviour
     private TextMeshProUGUI textRange;
     [SerializeField]
     private TextMeshProUGUI textLevel;
+    [SerializeField]
+    private TextMeshProUGUI textUpGradeGold;
 
     private TowerWeapon currentTowerWeapon;
     private void Awake()
@@ -57,6 +62,7 @@ public class TowerDataViewer : MonoBehaviour
         textDamage.text = "Damage : " + currentTowerWeapon.damage;
         textRate.text = "Rate : " + currentTowerWeapon.rate;
         textRange.text = "Range : " + currentTowerWeapon.range;
+        textUpGradeGold.text = "UpGrade : " + currentTowerWeapon.upGradeGold + " Gold";
         //textLevel.text = "Level : " + currentTower.Level;
         //textUpgradeCost.text = currentTower.UpgradeCost.ToString();
         //textSellCost.text = currentTower.SellCost.ToString();
@@ -64,7 +70,11 @@ public class TowerDataViewer : MonoBehaviour
 
     public void UpGradeTowerButton()
     {
-        currentTowerWeapon.UPGrade();
+        if (player.gold >= currentTowerWeapon.upGradeGold)
+        {
+            currentTowerWeapon.UPGrade();
+            player.gold -= currentTowerWeapon.upGradeGold;
+        }
         UpdateTowerData();
     }
 }
