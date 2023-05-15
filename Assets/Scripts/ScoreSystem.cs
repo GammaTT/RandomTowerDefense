@@ -7,12 +7,12 @@ using TMPro;
 
 public class ScoreSystem
 {
-    private List<int> scoreData = new List<int>();
+    private List<int> scoreData = new();
     private int showScoreCount = 8;
     public int currentScore;
 
     string path = Path.Combine(Application.dataPath, "Resources/Score.json");
-    JsonSerializer serializer = new JsonSerializer();
+    JsonSerializer serializer = new();
 
 
     private TextMeshProUGUI textCurrentScore;
@@ -26,7 +26,8 @@ public class ScoreSystem
     public void AddScore(int point)
     {
         currentScore += point;
-        textCurrentScore.text = "Score : " + currentScore;
+        //textCurrentScore.text = "Score : " + currentScore;
+        textCurrentScore.text = currentScore.ToString();
     }
 
     //기록된 스코어 에 현재 스코어 저장

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Enemy 02
   m_EditorClassIdentifier: 
   gold: 3
+  scorePoint: 15
   maxHp: 50
   moveSpeed: 2.5
   rotateSpeed: 0.15

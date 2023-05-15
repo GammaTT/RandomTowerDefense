@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static WaveData;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -56,17 +57,31 @@ public class EnemySpawner : MonoBehaviour
         int spawnEnemyCount = 0;
         while (spawnEnemyCount < currentWave.maxEnemyCount)
         {
-            GameObject enemyObject = Instantiate(currentWave.enemyPrefabs[Random.Range(0, currentWave.enemyPrefabs.Length)],
-                transform.position, Quaternion.identity);
-            Enemy enemy = enemyObject.GetComponent<Enemy>();
-            enemy.SetUp(this);
-            enemyList.Add(enemy);
-            currentEnemyCount++;
+            float randomSpawnRoll = Random.value;
+            GameObject selectEnemy = null;
 
-            spawnEnemyCount++;
-            yield return new WaitForSeconds(currentWave.spawnDelay);
-            
-            //break;
+            foreach(var enemyInWave in currentWave.enemies)
+            {
+                if (randomSpawnRoll <= enemyInWave.enemyPercentage)
+                {
+                    selectEnemy = enemyInWave.enemyPrefab;
+                    break;
+                }
+
+                randomSpawnRoll -= enemyInWave.enemyPercentage;
+            }
+
+            if (selectEnemy != null)
+            {
+                GameObject enemyObject = Instantiate(selectEnemy, transform.position, Quaternion.identity);
+                Enemy enemy = enemyObject.GetComponent<Enemy>();
+                enemy.SetUp(this);
+                enemyList.Add(enemy);
+                currentEnemyCount++;
+
+                spawnEnemyCount++;
+                yield return new WaitForSeconds(currentWave.spawnDelay);
+            }
         }
 
         waveSystem.FinishWave();

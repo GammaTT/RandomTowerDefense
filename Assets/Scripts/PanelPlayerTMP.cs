@@ -12,10 +12,12 @@ public class PanelPlayerTMP : MonoBehaviour
     private TextMeshProUGUI playerGold;
     [SerializeField]
     private TextMeshProUGUI playerHp;
+    [SerializeField]
+    private TextMeshProUGUI currentScoreText;
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentScoreText.text = "0";
     }
 
     // Update is called once per frame

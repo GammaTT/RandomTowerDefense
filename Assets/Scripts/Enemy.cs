@@ -34,6 +34,7 @@ public class Enemy : MonoBehaviour
         enemyPath = new List<AStarNode>();
 
         this.gold = enemyData.gold;
+        scorePoint = enemyData.scorePoint;
         this.moveSpeed = enemyData.moveSpeed;
         this.rotateSpeed = enemyData.rotateSpeed;
 

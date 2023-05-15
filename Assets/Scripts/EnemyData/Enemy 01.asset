@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Enemy 01
   m_EditorClassIdentifier: 
   gold: 1
+  scorePoint: 10
   maxHp: 10
   moveSpeed: 2
   rotateSpeed: 0

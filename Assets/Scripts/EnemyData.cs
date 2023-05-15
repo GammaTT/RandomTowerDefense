@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyData : ScriptableObject
 {
     public int gold;
+    public int scorePoint;
     public float maxHp;
     public float moveSpeed;
     public float rotateSpeed;
