@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Collections.Generic;
 
-public class WaveData : MonoBehaviour
+public class WaveSystem : MonoBehaviour
 {
     [SerializeField]
     private Wave[] waves;                   // 현재 스테이지의 모든 웨이브 정보
@@ -91,7 +91,7 @@ public class WaveData : MonoBehaviour
     }
 }
 
-
+ 
 //웨이브 시스템을 인스펙터에서 설정하게 그냥 놔둘까
 //제이순 파일로 읽어올까, 스크립터블 오브젝트도 괜찮을거 같다.
 [System.Serializable]
@@ -100,4 +100,18 @@ public struct Wave
     public float spawnDelay;     // 현재 웨이브 적 생성 주기
     public int maxEnemyCount; // 현재 웨이브 적 등장 숫자
     public GameObject[] enemyPrefabs;  // 현재 웨이브 적 등장 종류
+}
+
+[CreateAssetMenu]
+public class Waves : ScriptableObject
+{
+    public GameObject[] enemyPrefabs;
+
+    [System.Serializable]
+    public struct Wave
+    {
+        public int spawnDelay;
+        public int maxEnemyCount;
+        public GameObject[] enemyPrefabs;
+    }
 }

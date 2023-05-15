@@ -11,7 +11,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private float SpawnDelay;
     [SerializeField]
-    private WaveData waveSystem;
+    private WaveSystem waveSystem;
 
 
     private float LastSpawnTime;

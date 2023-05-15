@@ -15,3 +15,4 @@ MonoBehaviour:
   gold: 3
   maxHp: 50
   moveSpeed: 2.5
+  rotateSpeed: 0.15

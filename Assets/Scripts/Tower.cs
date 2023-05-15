@@ -5,11 +5,10 @@ using UnityEngine;
 public class Tower : MonoBehaviour
 {
     [SerializeField]
-    private TowerSpawner towerSpawner;
-    [SerializeField]
     private float RotateSpeed = 0.1f;
 
     public AStarNode towerNode;
+    private TowerSpawner towerSpawner;
 
     public void SetUp(TowerSpawner towerSpawner, AStarNode towerNode)
     {

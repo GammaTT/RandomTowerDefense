@@ -8,17 +8,15 @@ public class Enemy : MonoBehaviour
 {
     public List<AStarNode> enemyPath;
 
-    public float rotateSpeed = 0.1f;
     //private float PathUpdateDelay = 1f;
     private float LastPathUpdate;
     private EnemySpawner enemySpawner;
 
-    [SerializeField]
-    private int gold = 10;
-    [SerializeField]
-    private int scorePoint = 10;
-    [SerializeField]
-    private float moveSpeed = 2.0f;
+    private int gold;
+    private int scorePoint;
+    private float moveSpeed;
+    private float rotateSpeed;
+
     public EnemyData enemyData;
 
 
@@ -37,6 +35,7 @@ public class Enemy : MonoBehaviour
 
         this.gold = enemyData.gold;
         this.moveSpeed = enemyData.moveSpeed;
+        this.rotateSpeed = enemyData.rotateSpeed;
 
         LastPathUpdate = Time.time;
         SetPath();
