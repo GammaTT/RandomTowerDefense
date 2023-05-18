@@ -21,8 +21,13 @@ public class PanelTowerDataViewer : MonoBehaviour
     private TextMeshProUGUI textLevel;
     [SerializeField]
     private TextMeshProUGUI textUpGradeGold;
+    [SerializeField]
+    private TextMeshProUGUI textUtility;
 
     private TowerWeapon currentTowerWeapon;
+
+    //bool showSpecialData = false;
+
     private void Awake()
     {
         OffPanel();
@@ -61,7 +66,17 @@ public class PanelTowerDataViewer : MonoBehaviour
         textLevel.text = "Level : " + (currentTowerWeapon.level + 1);
         textDamage.text = "Damage : " + currentTowerWeapon.damage;
         textRate.text = "Rate : " + currentTowerWeapon.rate;
-        textRange.text = "Range : " + currentTowerWeapon.range;
+        textRange.text = "Range : " + currentTowerWeapon.range.ToString("0.00");
+
+        if (currentTowerWeapon.weaponType == WeaponType.Slow)
+        {
+            textUtility.text = "Slow : " + (currentTowerWeapon.slowValue * 100f).ToString("0") + "%";
+        }
+        else
+        {
+            textUtility.text = "";
+        }
+
         textUpGradeGold.text = "UpGrade : " + currentTowerWeapon.upGradeGold + " Gold";
         //textLevel.text = "Level : " + currentTower.Level;
         //textUpgradeCost.text = currentTower.UpgradeCost.ToString();

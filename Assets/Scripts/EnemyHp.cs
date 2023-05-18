@@ -3,19 +3,27 @@ using UnityEngine;
 
 public class EnemyHp : MonoBehaviour
 {
-    private float maxHP;          // 최대 체력
-    private float currentHP;      // 현재 체력
+    public float maxHp;          // 최대 체력
+    public float currentHp;      // 현재 체력
     private bool isDie = false;  // 적이 사망 상태이면 isDie를 true로 설정
 
     private Enemy enemy;
     private SpriteRenderer spriteRenderer;
-    
+    private EnemyHpViewer enemyHpViewer;
+
+
+    public void SetUp(EnemyHpViewer enemyHpViewer)
+    {
+        this.enemyHpViewer = enemyHpViewer;
+    }
+
     private void Start()
     {
         enemy = GetComponent<Enemy>();
-        maxHP = enemy.enemyData.maxHp;
-        currentHP = maxHP;
+        maxHp = enemy.enemyData.maxHp;
+        currentHp = maxHp;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        Debug.Log("enemyhpstart : " + maxHp + " " + currentHp);
     }
 
     public void TakeDamage(float damage)
@@ -27,13 +35,15 @@ public class EnemyHp : MonoBehaviour
         if (isDie == true) return;
 
         // 현재 체력을 damage만큼 감소
-        currentHP -= damage;
+        currentHp -= damage;
 
         StopCoroutine("HitAlphaAnimation");
         StartCoroutine("HitAlphaAnimation");
 
+        enemyHpViewer.hpSliderUpdate();
+
         // 체력이 0이하 = 적 캐릭터 사망
-        if (currentHP <= 0)
+        if (currentHp <= 0)
         {
             isDie = true;
             // 적 캐릭터 사망

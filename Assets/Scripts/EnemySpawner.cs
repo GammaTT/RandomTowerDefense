@@ -8,12 +8,12 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private Player player;
     [SerializeField]
-    private GameObject Enemy01Prefab;
-    [SerializeField]
-    private float SpawnDelay;
+    private Transform canvasTransform;
     [SerializeField]
     private WaveSystem waveSystem;
 
+    [SerializeField]
+    private GameObject enemyHpSliderPrefab;
 
     private float LastSpawnTime;
     private int currentEnemyCount;
@@ -74,8 +74,14 @@ public class EnemySpawner : MonoBehaviour
             if (selectEnemy != null)
             {
                 GameObject enemyObject = Instantiate(selectEnemy, transform.position, Quaternion.identity);
+                GameObject enemyHpSlider = SpawnEnemyHpSlider(enemyObject);
                 Enemy enemy = enemyObject.GetComponent<Enemy>();
-                enemy.SetUp(this);
+                EnemyHp enemyHp = enemyObject.GetComponent<EnemyHp>();
+                EnemyHpViewer enemyHpViewer = enemyHpSlider.GetComponent<EnemyHpViewer>();
+                enemy.SetUp(this, canvasTransform);
+                enemyHp.SetUp(enemyHpViewer);
+                enemyHpViewer.hpSliderUpdate();
+
                 enemyList.Add(enemy);
                 currentEnemyCount++;
 
@@ -85,6 +91,24 @@ public class EnemySpawner : MonoBehaviour
         }
 
         waveSystem.FinishWave();
+    }
+
+    private GameObject SpawnEnemyHpSlider(GameObject enemy)
+    {
+        // 적 체력을 나타내는 Slider UI 생성
+        GameObject sliderClone = Instantiate(enemyHpSliderPrefab);
+        // Slider UI 오브젝트를 parent("Canvas" 오브젝트)의 자식으로 설정
+        // Tip. UI는 캔버스의 자식오브젝트로 설정되어 있어야 화면에 보인다
+        sliderClone.transform.SetParent(canvasTransform);
+        // 계층 설정으로 바뀐 크기를 다시 (1, 1, 1)로 설정
+        sliderClone.transform.localScale = Vector3.one;
+
+        // Slider UI가 쫓아다닐 대상을 본인으로 설정
+        sliderClone.GetComponent<SliderPositionAutoSetter>().Setup(enemy.transform);
+        // Slider UI에 자신의 체력 정보를 표시하도록 설정
+        sliderClone.GetComponent<EnemyHpViewer>().Setup(enemy.GetComponent<EnemyHp>());
+
+        return sliderClone;
     }
 
     //그냥 에너미 스크립트에서 얻어오는게 낫나?

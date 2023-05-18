@@ -62,7 +62,8 @@ public class MapDirector : MonoBehaviour
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             Vector2 raycasyPoint = worldPos;
-            RaycastHit2D hit = Physics2D.Raycast(raycasyPoint, Vector2.zero);
+            //RaycastHit2D hit = Physics2D.Raycast(raycasyPoint, Vector2.zero);
+            RaycastHit2D hit = Physics2D.Raycast(raycasyPoint, Vector2.zero, Mathf.Infinity, LayerMask.GetMask("Tile"));
 
             if (hit.transform == null || !hit.transform.CompareTag("WalkableMap"))
             {

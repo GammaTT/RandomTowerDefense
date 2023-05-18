@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5995945161616379726}
   - component: {fileID: 5995945161616379727}
   - component: {fileID: 713657117424883800}
+  - component: {fileID: -6596195706827331691}
   - component: {fileID: 5995945161616379725}
   - component: {fileID: 4602826309727014391}
   m_Layer: 6
@@ -103,6 +104,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!50 &-6596195706827331691
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5995945161616379720}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!114 &5995945161616379725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,11 +137,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbbbc8f06ab57bb48b3bad0eefaa23ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeed: 0.1
-  gold: 10
-  scorePoint: 10
-  moveSpeed: 2
   enemyData: {fileID: 11400000, guid: a10d6d8ff73ccfa448c9ecbc0492595c, type: 2}
+  nextNodeMoveTime: 1
+  obstructed: 0
+  enemyHpSliderPrefab: {fileID: 6003947006283470158, guid: bfd6cac2502fb6a4d861fb4c336e937f, type: 3}
 --- !u!114 &4602826309727014391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,3 +153,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 692b1868f155df64895547025f604d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHp: 0
+  currentHp: 0

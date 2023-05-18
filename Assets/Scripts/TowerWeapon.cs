@@ -30,12 +30,15 @@ public class TowerWeapon : MonoBehaviour
     [Header("Projectile")]
     [SerializeField]
     private GameObject targetProjectilePrefab;
+
     [Header("BombProjectile")]
     [SerializeField]
     private GameObject bombProjectilePrefab;
+
     [Header("MultiShoot")]
     [SerializeField]
     private GameObject projectilePrefab;
+
     [Header("MultiBomb")]
     [SerializeField]
     private GameObject bombPrefab;
@@ -43,6 +46,8 @@ public class TowerWeapon : MonoBehaviour
     [Header("Laser")]
     [SerializeField]
     private LineRenderer lineRenderer;
+
+    private Slow slow;
 
     public WeaponState weaponState = WeaponState.SearchTarget;
     private Transform attackTarget = null;
@@ -54,12 +59,19 @@ public class TowerWeapon : MonoBehaviour
     public TowerGrade towerGrade;
     public Sprite towerSprite => towerData.sprite;
     public int level = 1; // 이것도 나중에 돼는지 확인 해야됌
-    public int grade;
     public int upGradeGold;
     public int useGoldToUpGrade = 0;
+
+    [HideInInspector]
     public float damage;
+    [HideInInspector]
     public float range;
+    [HideInInspector]
     public float rate;
+
+    //슬로우 타워일때
+    [HideInInspector]
+    public float slowValue;
 
     // Start is called before the first frame update
     void Start()
@@ -67,6 +79,13 @@ public class TowerWeapon : MonoBehaviour
         this.damage = towerData.weapon.damage;
         this.range = towerData.weapon.range;
         this.rate = towerData.weapon.rate;
+
+        if (weaponType == WeaponType.Slow)
+        {
+            this.slowValue = towerData.weapon.slowValue;
+            slow.SetUp(slowValue, range);
+        }
+
         upGradeGold = (int)towerGrade * Constants.upGradeGoldMulti;
     }
 
@@ -78,7 +97,13 @@ public class TowerWeapon : MonoBehaviour
 
         //Invoke("ChangeState(WeaponState.SearchTarget)", 1f);
         if (!(weaponType == WeaponType.Slow || weaponType == WeaponType.Buff))
+        {
             ChangeState(WeaponState.SearchTarget);
+        }
+        else if (weaponType == WeaponType.Slow)
+        {
+            slow = GetComponentInChildren<Slow>();
+        }
     }
     // Update is called once per frame
     void Update()
@@ -95,6 +120,14 @@ public class TowerWeapon : MonoBehaviour
         damage += towerData.weaponUpGradeValue.damage;
         range += towerData.weaponUpGradeValue.range;
         rate += towerData.weaponUpGradeValue.rate;
+
+
+        if (weaponType == WeaponType.Slow)
+        {
+            slowValue += towerData.weaponUpGradeValue.slowValue;
+            slow.SetUp(slowValue, range);
+        }
+
         level++;
 
         return true;

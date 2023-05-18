@@ -17,6 +17,6 @@ MonoBehaviour:
     maxEnemyCount: 15
     enemies:
     - enemyPrefab: {fileID: 5995945161616379720, guid: 344d27fe809501e479291516e6d1881b, type: 3}
-      enemyPercentage: 0.9038675
+      enemyPercentage: 0.10104316
     - enemyPrefab: {fileID: 5995945161616379720, guid: 903b56849fb45b54d83e66aa7f46f956, type: 3}
-      enemyPercentage: 0.09613253
+      enemyPercentage: 0.8989569

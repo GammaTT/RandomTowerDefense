@@ -16,9 +16,11 @@ public class ScoreSystem
 
 
     private TextMeshProUGUI textCurrentScore;
-    public void Setup(TextMeshProUGUI textCurrentScore)
+    private TextMeshProUGUI textBestScore;
+    public void Setup(TextMeshProUGUI textCurrentScore, TextMeshProUGUI textBestScore)
     {
         this.textCurrentScore = textCurrentScore;
+        this.textBestScore = textBestScore;
         LoadScore();
     }
 
@@ -38,13 +40,14 @@ public class ScoreSystem
             scoreData.Add(currentScore);
         }
         SaveScore();
-
     }
     public void SaveScore()
     {
         if (File.Exists(path))
         {
             scoreData.Sort(CompareScoreDescending);
+
+            SetTextBestScore();
 
             string jsonScoreData = JsonConvert.SerializeObject(scoreData);
 
@@ -63,8 +66,18 @@ public class ScoreSystem
             string jsonString = File.ReadAllText(path);
             scoreData = JsonConvert.DeserializeObject<List<int>>(jsonString);
             scoreData.Sort(CompareScoreDescending);
+
+            SetTextBestScore();
         }
 
+    }
+
+    public void SetTextBestScore()
+    {
+        if (scoreData.Count > 0)
+        {
+            textBestScore.text = "Best Score : " + scoreData[0].ToString();
+        }
     }
 
     int CompareScoreDescending(int x, int y)

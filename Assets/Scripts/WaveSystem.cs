@@ -15,6 +15,8 @@ public class WaveSystem : MonoBehaviour
     private TextMeshProUGUI textWaveCount;
     [SerializeField]
     private TextMeshProUGUI textCurrentScore;
+    [SerializeField]
+    private TextMeshProUGUI textBestScore;
 
     private int currentWaveIndex = 0;
 
@@ -44,7 +46,7 @@ public class WaveSystem : MonoBehaviour
         textWaveCount.text = "Wave : " + 1;
         textCurrentScore.text = "Score : " + 0;
         scoreSystem = new ScoreSystem();
-        scoreSystem.Setup(textCurrentScore);
+        scoreSystem.Setup(textCurrentScore, textBestScore);
         //LoadWaves();
     }
     public void StartWave()

@@ -11,22 +11,27 @@ public class Enemy : MonoBehaviour
     //private float PathUpdateDelay = 1f;
     private float LastPathUpdate;
     private EnemySpawner enemySpawner;
+    private Transform canvasTransform;
 
     private int gold;
     private int scorePoint;
     private float moveSpeed;
     private float rotateSpeed;
 
+    private float baseNextNodeMoveTime;
     public EnemyData enemyData;
 
-
+    //[HideInInspector]
+    public float nextNodeMoveTime = 1.0f;
     private float currentTime;
-    private float nextNodeMoveTime = 1.0f;
     private float nodeArriveDistance = 0.1f;
-    public void SetUp(EnemySpawner enemySpawner)
+
+    public bool obstructed = false;
+
+    public void SetUp(EnemySpawner enemySpawner, Transform canvasTransform)
     {
         this.enemySpawner = enemySpawner;
-
+        this.canvasTransform = canvasTransform;
     }
     // Start is called before the first frame update
     void Start()
@@ -43,7 +48,7 @@ public class Enemy : MonoBehaviour
 
         //nextNodeMoveTime 기본은 1 MoveSpeed가 빨라 질때마다 점점 줄어듬
         nextNodeMoveTime *= (1 / moveSpeed);
-
+        baseNextNodeMoveTime = nextNodeMoveTime;
     }
 
     // Update is called once per frame
@@ -55,7 +60,7 @@ public class Enemy : MonoBehaviour
             SetPath();
         }*/ //벽을 설치할 때만 새로 경로 설정으로 바꿈
 
-        transform.Rotate(Vector3.forward * -rotateSpeed);
+        transform.Rotate(Vector3.forward * -rotateSpeed * (1 - nextNodeMoveTime));
     }
 
     public void SetPath()
@@ -136,7 +141,13 @@ public class Enemy : MonoBehaviour
         }*/
     }
 
-    
+    //movespeed 에 비례해 다음 노드(타일)로 이동하는 시간이 있기에
+    //move
+    public void ReSetSpeed()
+    {
+        nextNodeMoveTime = baseNextNodeMoveTime;
+    }
+
 
     public void OnDie(EnemyDestroyType type)
     {

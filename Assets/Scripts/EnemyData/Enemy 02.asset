@@ -16,4 +16,4 @@ MonoBehaviour:
   scorePoint: 15
   maxHp: 50
   moveSpeed: 2.5
-  rotateSpeed: 0.15
+  rotateSpeed: 0.3
