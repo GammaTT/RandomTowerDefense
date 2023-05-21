@@ -47,7 +47,7 @@ public class MapDirector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (enemySpawner.enemyList.Count > 0)
             {
@@ -57,6 +57,7 @@ public class MapDirector : MonoBehaviour
             else if (player.gold < Constants.spawnWallGold)
             {
                 Debug.Log("벽을 지을 골드가 부족합니다.");
+                return;
             }
 
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

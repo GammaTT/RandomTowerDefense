@@ -74,11 +74,12 @@ public class EnemySpawner : MonoBehaviour
             if (selectEnemy != null)
             {
                 GameObject enemyObject = Instantiate(selectEnemy, transform.position, Quaternion.identity);
+                yield return new WaitForEndOfFrame();
                 GameObject enemyHpSlider = SpawnEnemyHpSlider(enemyObject);
                 Enemy enemy = enemyObject.GetComponent<Enemy>();
                 EnemyHp enemyHp = enemyObject.GetComponent<EnemyHp>();
                 EnemyHpViewer enemyHpViewer = enemyHpSlider.GetComponent<EnemyHpViewer>();
-                enemy.SetUp(this, canvasTransform);
+                enemy.SetUp(this);
                 enemyHp.SetUp(enemyHpViewer);
                 enemyHpViewer.hpSliderUpdate();
 
@@ -112,21 +113,26 @@ public class EnemySpawner : MonoBehaviour
     }
 
     //그냥 에너미 스크립트에서 얻어오는게 낫나?
-    public void DestroyEnemy(EnemyDestroyType type, Enemy enemy, int gold, int score)
+    public void DestroyEnemy(EnemyDestroyType type, Enemy enemy)
     {
+        int gold = enemy.GetGold();
+        int scorePoint = enemy.GetScorePoint();
+
         // 적이 목표지점까지 도착했을 때
         if (type == EnemyDestroyType.Arrive)
         {
-            // 플레이어의 체력 -1
-            player.TakeDamage(1);
+            player.TakeDamage(Constants.enemyGoalInDamage);
         }
         // 적이 플레이어의 발사체에게 사망했을 떄
         else if (type == EnemyDestroyType.Kill)
         {
             // 적의 종류에 따라 사망 시 골드 획득
             player.gold += gold;
-            waveSystem.scoreSystem.AddScore(score);
+            waveSystem.scoreSystem.AddScore(scorePoint);
         }
+
+        //enemy.gameObject.GetComponent<EnemyHp>().enemy
+
 
         // 적이 사망할 때마다 현재 웨이브의 생존 적 숫자 감소 (UI 표시용)
         currentEnemyCount--;

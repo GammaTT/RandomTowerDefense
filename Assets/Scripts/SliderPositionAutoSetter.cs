@@ -17,13 +17,6 @@ public class SliderPositionAutoSetter : MonoBehaviour
 
     private void LateUpdate()
     {
-        // 적이 파괴되어 쫓아다닐 대상이 사라지면 Slider UI도 삭제
-        if ( targetTransform == null )
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         // 오브젝트의 위치가 갱신된 이후에 Slider UI도 함께 위치를 설정하도록 하기 위해
         // LateUpdate()에서 호출한다
         
@@ -33,11 +26,3 @@ public class SliderPositionAutoSetter : MonoBehaviour
         rectTransform.position = screenPosition + distance;
     }
 }
-
-
-/*
- * File : SliderPositionAutoSetter.cs
- * Desc
- *  : Slider UI에 부착해서 사용하며, target 오브젝트를 쫓아다니도록 함
- *    
- */

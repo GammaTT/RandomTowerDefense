@@ -39,7 +39,7 @@ public class ObjectDetector : MonoBehaviour
         }
 
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0))
         {
             Vector2 raycasyPoint = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
@@ -62,7 +62,7 @@ public class ObjectDetector : MonoBehaviour
             }
             else
             {
-                towerAttackRange.gameObject.SetActive(false);
+                //towerAttackRange.gameObject.SetActive(false);
             }
 
 /*            else if (hit.transform.CompareTag("Enemy"))
@@ -71,6 +71,10 @@ public class ObjectDetector : MonoBehaviour
 
             }*/
 
+        }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            towerAttackRange.gameObject.SetActive(false);
         }
     }
 

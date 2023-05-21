@@ -23,7 +23,6 @@ public class EnemyHp : MonoBehaviour
         maxHp = enemy.enemyData.maxHp;
         currentHp = maxHp;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        Debug.Log("enemyhpstart : " + maxHp + " " + currentHp);
     }
 
     public void TakeDamage(float damage)
@@ -66,6 +65,11 @@ public class EnemyHp : MonoBehaviour
         // 적의 투명도를 100%로 설정
         color.a = 1.0f;
         spriteRenderer.color = color;
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(enemyHpViewer.gameObject);
     }
 }
 

@@ -19,9 +19,11 @@ MonoBehaviour:
     rate: 1.5
     range: 3
     sell: 0
+    slowValue: 0
   weaponUpGradeValue:
-    damage: 1
+    damage: 1.5
     rate: 0
-    range: 0
-  grade: 1
+    range: 0.1
+    slowValue: 0
+  grade: 2
   sprite: {fileID: 21300000, guid: 4a868e28be12a6349a2742aa1909ed42, type: 3}

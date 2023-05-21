@@ -28,10 +28,10 @@ public class Enemy : MonoBehaviour
 
     public bool obstructed = false;
 
-    public void SetUp(EnemySpawner enemySpawner, Transform canvasTransform)
+    public void SetUp(EnemySpawner enemySpawner)
     {
         this.enemySpawner = enemySpawner;
-        this.canvasTransform = canvasTransform;
+        //this.canvasTransform = canvasTransform;
     }
     // Start is called before the first frame update
     void Start()
@@ -61,6 +61,16 @@ public class Enemy : MonoBehaviour
         }*/ //벽을 설치할 때만 새로 경로 설정으로 바꿈
 
         transform.Rotate(Vector3.forward * -rotateSpeed * (1 - nextNodeMoveTime));
+    }
+
+    public int GetGold()
+    {
+        return gold;
+    }
+
+    public int GetScorePoint()
+    {
+        return scorePoint;
     }
 
     public void SetPath()
@@ -153,14 +163,14 @@ public class Enemy : MonoBehaviour
     {
         // EnemySpawner에서 리스트로 적 정보를 관리하기 때문에 Destroy()를 직접하지 않고
         // EnemySpawner에게 본인이 삭제될 때 필요한 처리를 하도록 DestroyEnemy() 함수 호출
-        enemySpawner.DestroyEnemy(type, this, gold, scorePoint);
+        enemySpawner.DestroyEnemy(type, this);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Goal")
         {
-            enemySpawner.DestroyEnemy(EnemyDestroyType.Arrive, this, gold, scorePoint);
+            enemySpawner.DestroyEnemy(EnemyDestroyType.Arrive, this);
         }
     }
 }

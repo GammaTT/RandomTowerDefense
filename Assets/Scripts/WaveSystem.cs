@@ -12,6 +12,8 @@ public class WaveSystem : MonoBehaviour
     [SerializeField]
     private EnemySpawner enemySpawner;
     [SerializeField]
+    private TextFadeOut textFadeOut;
+    [SerializeField]
     private TextMeshProUGUI textWaveCount;
     [SerializeField]
     private TextMeshProUGUI textCurrentScore;
@@ -54,9 +56,13 @@ public class WaveSystem : MonoBehaviour
         if (currentWaveIndex < waveData.waves.Length)
         {
             StartGame();
+            int currentWave = currentWaveIndex + 1;
+
+            textFadeOut.ShowWaveText(currentWave);
+
             //현재 웨이브의 정보 에너미 스포너에 넘겨줌
             enemySpawner.StartWave(waveData.waves[currentWaveIndex]);
-            textWaveCount.text = "Wave : " + (currentWaveIndex + 1);
+            textWaveCount.text = "Wave : " + (currentWave);
         }
     }
 

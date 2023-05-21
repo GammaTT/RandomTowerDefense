@@ -16,11 +16,14 @@ MonoBehaviour:
   followTowerPrefab: {fileID: 0}
   weapon:
     damage: 5
-    rate: 1
+    rate: 2
     range: 3
     sell: 0
+    slowValue: 0
   weaponUpGradeValue:
-    damage: 1
+    damage: 1.5
     rate: 0
     range: 0
+    slowValue: 0
+  grade: 0
   sprite: {fileID: 21300000, guid: 8ff5851d96e353540b1e6d34f6dafe7b, type: 3}
