@@ -20,6 +20,7 @@ public class TowerData : ScriptableObject
         public float rate;  // 공격 속도
         public float range; // 공격 범위
         public int sell;    // 타워 판매 시 획득 골드
+        public bool doubleShot;
 
         [Header("About SlowTower (0.0 ~ 1.0)")]
         public float slowValue;

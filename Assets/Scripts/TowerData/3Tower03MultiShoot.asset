@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1fc33be49ddaf5d4e90c75ccc924b5ae, type: 3}
-  m_Name: 3Tower01MultiBomb
+  m_Name: 3Tower03MultiShoot
   m_EditorClassIdentifier: 
   towerPrefab: {fileID: 0}
   followTowerPrefab: {fileID: 0}
   weapon:
     damage: 10
-    rate: 2
+    rate: 1.5
     range: 3
     sell: 0
-    doubleShot: 0
+    doubleShot: 1
     slowValue: 0
   weaponUpGradeValue:
-    damage: 3.3
+    damage: 3.4
     rate: -0.05
     range: 0
     slowValue: 0
   grade: 3
-  sprite: {fileID: 21300000, guid: ddc556a241acd514ba8409f6e064201c, type: 3}
+  sprite: {fileID: 21300000, guid: c37b6465dcc722340a3a437ce8dbbe96, type: 3}

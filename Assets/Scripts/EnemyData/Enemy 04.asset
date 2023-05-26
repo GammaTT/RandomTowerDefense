@@ -15,5 +15,5 @@ MonoBehaviour:
   gold: 6
   scorePoint: 30
   maxHp: 150
-  moveSpeed: 3
-  rotateSpeed: 0.35
+  moveSpeed: 4.5
+  rotateSpeed: 0.45

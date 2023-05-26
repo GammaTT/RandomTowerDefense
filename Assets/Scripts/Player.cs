@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private TowerSpawner towerSpawner;
     [SerializeField]
+    private WaveSystem waveSystem;
+    [SerializeField]
     private Image hitRedImage;
 
     private void Awake()
@@ -48,9 +50,10 @@ public class Player : MonoBehaviour
         StopCoroutine("HitAnimation");
         StartCoroutine("HitAnimation");
 
-        if (currentHp < 0)
+        if (currentHp <= 0)
         {
             //holy moly wtf game over damn it
+            waveSystem.FinishGame();
         }
     }
 

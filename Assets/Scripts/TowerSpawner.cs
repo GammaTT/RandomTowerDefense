@@ -9,6 +9,7 @@ public enum TowerGrade
     Grade1 = 1,
     Grade2,
     Grade3,
+    Grade4,
 };
 public class TowerSpawner : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class TowerSpawner : MonoBehaviour
     private GameObject[] towerGrade2Prefabs;
     [SerializeField]
     private GameObject[] towerGrade3Prefabs;
+    [SerializeField]
+    private GameObject[] towerGrade4Prefabs;
 
     [SerializeField]
     private GameObject TestTower;
@@ -49,7 +52,8 @@ public class TowerSpawner : MonoBehaviour
         {
             towerGrade1Prefabs,
             towerGrade2Prefabs,
-            towerGrade3Prefabs
+            towerGrade3Prefabs,
+            towerGrade4Prefabs
         };
 
         //Debug.Log(towerTypeList[2].Length);
@@ -58,48 +62,6 @@ public class TowerSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-/*        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 worldpos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            Vector2 raycasyPoint = worldpos;
-
-            RaycastHit2D hit = Physics2D.Raycast(raycasyPoint, Vector2.zero);
-
-            if (hit.transform == null || !hit.transform.CompareTag("TileMap"))
-            {
-                Debug.Log("Not TileMap");
-                return;
-            }
-
-
-            AStarNode WallNode = MapDirector.Instance.AStarGrid_.GetNodeFromWorld(worldpos);
-
-            if (WallNode.isBuildTower)
-            {
-                return;
-            }
-
-            Vector3Int tilePosition = MapDirector.Instance.WallMap.WorldToCell(worldpos);
-
-            if (MapDirector.Instance.WallMap.HasTile(tilePosition))
-            {
-
-                GameObject Tower = Instantiate(TowerPrefab[Random.Range(0, TowerPrefab.Length)], transform.position, Quaternion.identity);
-                //GameObject Tower = Instantiate(TowerPrefab[1], transform.position, Quaternion.identity);
-                TowerWeapon towerWeapon = Tower.GetComponent<TowerWeapon>();
-                towerWeapon.SetUp(this, enemySpawner);
-
-                Vector3 CenterPosition = WallMap.GetCellCenterWorld(tilePosition);
-                CenterPosition -= WallMap.cellGap / 2;
-
-                Tower.transform.position = CenterPosition;
-
-                WallNode.isBuildTower = true;
-            }
-            //MapDirector.Instance.WallMap.HasTile(new Vector3Int(worldpos.x, worldpos.y, 0));
-        }*/
-
 
     }
 
@@ -149,8 +111,6 @@ public class TowerSpawner : MonoBehaviour
             return;
         }
 
-        //Debug.Log(grade);
-
         int gradeIndex = (int)(grade - 1);
         Vector3Int tilePosition = MapDirector.Instance.WallMap.WorldToCell(towerLocation);
 
@@ -177,27 +137,6 @@ public class TowerSpawner : MonoBehaviour
         spawnTowerScript.SetUp(this, MapDirector.Instance.aStarGrid.GetNodeFromWorld(tileCenterPosition));
     }
     
-/*    public void TowerSetup(int towerGrade, Vector3 towerPosition)
-    {
-        GameObject Tower = new GameObject();
-
-        if (towerGrade == 1)
-        {
-            Tower = Instantiate(towerGrade1Prefab[Random.Range(0, towerGrade1Prefab.Length)], transform.position, Quaternion.identity);
-        }
-
-        towerList.Add(Tower);
-        TowerWeapon towerWeapon = Tower.GetComponent<TowerWeapon>();
-        Tower tower = Tower.GetComponent<Tower>();
-        towerWeapon.SetUp(this, enemySpawner);
-        tower.SetUp(this, WallNode);
-
-        Vector3 CenterPosition = WallMap.GetCellCenterWorld(tilePosition);
-        CenterPosition -= WallMap.cellGap / 2;
-
-        Tower.transform.position = CenterPosition;
-        WallNode.isBuildTower = true;
-    }*/
     public void CombineTower(GameObject Tower)
     {
         TowerWeapon selectTowerWeapon = Tower.GetComponent<TowerWeapon>();

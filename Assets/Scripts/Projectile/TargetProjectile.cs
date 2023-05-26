@@ -6,7 +6,7 @@ public class TargetProjectile : MonoBehaviour
     private Transform target;
     //private	int			damage;
     private float damage;
-    private float moveSpeed = 7.0f;
+    private float moveSpeed = 8.0f;
 
     public void Setup(Transform target, float damage)
     {

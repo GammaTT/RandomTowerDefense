@@ -17,8 +17,6 @@ public class SliderPositionAutoSetter : MonoBehaviour
 
     private void LateUpdate()
     {
-        // 오브젝트의 위치가 갱신된 이후에 Slider UI도 함께 위치를 설정하도록 하기 위해
-        // LateUpdate()에서 호출한다
         
         // 오브젝트의 월드 좌표를 기준으로 화면에서의 좌표 값을 구함
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(targetTransform.position);

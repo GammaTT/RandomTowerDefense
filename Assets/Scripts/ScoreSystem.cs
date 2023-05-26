@@ -14,7 +14,6 @@ public class ScoreSystem
     string path = Path.Combine(Application.dataPath, "Resources/Score.json");
     JsonSerializer serializer = new();
 
-
     private TextMeshProUGUI textCurrentScore;
     private TextMeshProUGUI textBestScore;
     public void Setup(TextMeshProUGUI textCurrentScore, TextMeshProUGUI textBestScore)

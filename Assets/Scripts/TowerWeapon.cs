@@ -8,7 +8,8 @@ public enum WeaponType
     Laser, Slow, Buff, 
     ChainLightning, Bomb, 
     MultiWayShooting,
-    MultiBomb
+    MultiBomb,
+    MultiLaser
 }
 
 public enum WeaponState 
@@ -47,10 +48,17 @@ public class TowerWeapon : MonoBehaviour
     [SerializeField]
     private LineRenderer lineRenderer;
 
+    [Header("MultiLaserPlus")]
+    [SerializeField]
+    private LineRenderer lineRenderer2;
+    [SerializeField]
+    private LineRenderer lineRenderer3;
+
     private Slow slow;
 
     public WeaponState weaponState = WeaponState.SearchTarget;
     private Transform attackTarget = null;
+    private Vector3 attackTargetVector;
     private SpriteRenderer spriteRenderer; //타워 현재 정보용 이미지
 
     private TowerSpawner towerSpawner;
@@ -68,6 +76,7 @@ public class TowerWeapon : MonoBehaviour
     public float range;
     [HideInInspector]
     public float rate;
+    bool doubleShot;
 
     //슬로우 타워일때
     [HideInInspector]
@@ -79,6 +88,7 @@ public class TowerWeapon : MonoBehaviour
         this.damage = towerData.weapon.damage;
         this.range = towerData.weapon.range;
         this.rate = towerData.weapon.rate;
+        this.doubleShot = towerData.weapon.doubleShot;
 
         if (weaponType == WeaponType.Slow)
         {
@@ -173,22 +183,6 @@ public class TowerWeapon : MonoBehaviour
                         ChangeState(WeaponState.TryAttackMultiBomb);
                         break;
                 }
-/*                if (weaponType == WeaponType.Cannon || weaponType == WeaponType.Bomb)
-                {
-                    ChangeState(WeaponState.TryAttackCannon);
-                }
-                else if (weaponType == WeaponType.Laser)
-                {
-                    ChangeState(WeaponState.TryAttackLaser);
-                }
-                else if (weaponType == WeaponType.ChainLightning)
-                {
-                    ChangeState(WeaponState.TryAttackChainLightning);
-                }
-                else if (weaponType == WeaponType.MultiWayShooting)
-                {
-                    ChangeState(WeaponState.TryAttackMultiShooting);
-                }*/
             }
 
             yield return new WaitForEndOfFrame();
@@ -260,10 +254,18 @@ public class TowerWeapon : MonoBehaviour
                 break;
             }
 
-            SpawnMultiProjectile();
+            attackTargetVector = attackTarget.transform.position;
+
+            SpawnMultiProjectile(attackTargetVector);
+
+            //두번 쏘는 타입 일때
+            if (doubleShot)
+            {
+                yield return new WaitForSeconds(0.2f);
+                SpawnMultiProjectile(attackTargetVector);
+            }
 
             yield return new WaitForSeconds(rate);
-
         }
     }
     private IEnumerator TryAttackChainLightning()
@@ -294,7 +296,6 @@ public class TowerWeapon : MonoBehaviour
                 ChangeState(WeaponState.SearchTarget); 
                 break;
             }
-            yield return new WaitForSeconds(rate);
 
             if (weaponType == WeaponType.Cannon)
             {
@@ -304,6 +305,8 @@ public class TowerWeapon : MonoBehaviour
             {
                 SpawnBombProjectile();
             }
+
+            yield return new WaitForSeconds(rate);
         }
     }
 
@@ -351,10 +354,10 @@ public class TowerWeapon : MonoBehaviour
         }
 
     }
-    private void SpawnMultiProjectile()
+    private void SpawnMultiProjectile(Vector3 attackTargetPosition)
     {
         Vector3 []targetMove = new Vector3[3] ;
-        targetMove[0] = (attackTarget.transform.position - transform.position);
+        targetMove[0] = (attackTargetPosition - transform.position);
         targetMove[1] = Quaternion.AngleAxis(45f, Vector3.forward) * targetMove[0];
         targetMove[2] = Quaternion.AngleAxis(-45f, Vector3.forward) * targetMove[0];
 
