@@ -9,7 +9,7 @@ public class ChainLightning : MonoBehaviour
     private float currentTime;
     private float damage = 1;
     private float searchRadius = 3.0f;
-    private float lightningMoveTime = 0.1f;
+    private float lightningMoveTime = 0.2f;
 
     GameObject startObject;
     GameObject targetObject;
@@ -17,8 +17,7 @@ public class ChainLightning : MonoBehaviour
     Vector2 startPosition;
     Vector2 targetPosition;
 
-    List<GameObject> alreadySearchObject;
-
+    List<GameObject> hitList;
 
     [SerializeField]
     private LayerMask layerMask;
@@ -35,59 +34,50 @@ public class ChainLightning : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        alreadySearchObject = new List<GameObject>();
+        hitList = new List<GameObject>();
     }
 
     public void ChainLightningStart()
     {
         lineRenderer.enabled = false;
 
-        alreadySearchObject.Clear();
+        hitList.Clear();
         startObject = this.gameObject;
         //startObject = null;
 
+        lineRenderer.enabled = true;
         StartCoroutine("ChainLightningSystem");
     }
 
     public IEnumerator ChainLightningSystem()
     {
-        lineRenderer.enabled = true;
         for (int i = 0; i < chainCount; i++)
         {
-            //Debug.Log("Start : " + startObject.transform.position);
-            //Debug.Log("Target : " + targetObject.transform.position);
-
-            //startObject is start from tower that check tag
-            if (startObject != null && startObject.CompareTag("Enemy") && !alreadySearchObject.Contains(startObject))
+            //타겟 오브젝트를 피격 리스트에 넣음
+            if (targetObject != null && !hitList.Contains(targetObject))
             {
-                alreadySearchObject.Add(startObject);
-            }
-
-            if (targetObject != null && !alreadySearchObject.Contains(targetObject))
-            {
-                alreadySearchObject.Add(targetObject);
+                hitList.Add(targetObject);
             }
 
             StartCoroutine("LightningEffect");
 
-            startObject = targetObject; // 이전 타겟을 새로운 시작 오브젝트로 설정
-            targetObject = SearchEnemy(targetObject); // find new target object
+            startObject = targetObject; // 이전 타겟을 새로운 시작 오브젝트(기준)로 설정
+            targetObject = SearchEnemy(targetObject); // 새로운 타겟을 전 타겟 기준으로 찾음
 
-            if (targetObject == startObject)
+            //새로운 타겟을 못찾으면 공격 종료
+            if (targetObject == null)
             {
                 break;
             }
             yield return new WaitForSeconds(lightningMoveTime);
         }
 
-        if (alreadySearchObject.Count > 0)
+        //피격된 적 리스트에 있는 적들 피격 처리
+        foreach (GameObject enemy in hitList)
         {
-            foreach (GameObject enemy in alreadySearchObject)
+            if (enemy != null)
             {
-                if (enemy != null)
-                {
-                    enemy.GetComponent<EnemyHp>().TakeDamage(damage);
-                }
+                enemy.GetComponent<EnemyHp>().TakeDamage(damage);
             }
         }
 
@@ -97,35 +87,42 @@ public class ChainLightning : MonoBehaviour
     public GameObject SearchEnemy(GameObject standardObject)
     {
         GameObject TargetEnemy = null;
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(standardObject.transform.position, searchRadius, layerMask);
-        float closestDistance = Mathf.Infinity;
-        bool activeSearch = false;
+        Collider2D[] colliders = null;
 
+        if (standardObject != null)
+        {
+             colliders = Physics2D.OverlapCircleAll(standardObject.transform.position, searchRadius, layerMask);
+        }
+        else //서치 도중 기준 오브젝트가 파괴됌 => null 리턴
+        {
+            return TargetEnemy;
+        }
+
+        float closestDistance = Mathf.Infinity;
+
+        //가장 가까운 충돌체 찾음
         foreach (Collider2D collider in colliders)
         {
-            //collider can was just before destroyed than check it
+            //검출된 충돌체가 파괴되어서 null 이거나 서치된 충돌체가 자기밖에 없거나 이미 맞은 적이면 다음 충돌체 검사
             if (collider == null || standardObject == collider.gameObject
-                || alreadySearchObject.Contains(collider.gameObject))
+                || hitList.Contains(collider.gameObject))
             {
                 continue;
             }
             
-            float distance = Vector2.Distance(standardObject.transform.position, collider.gameObject.transform.position);
+            float distance = Vector2.Distance(standardObject.transform.position, 
+                collider.gameObject.transform.position);
             if (distance < closestDistance)
             {
-                activeSearch = true;
                 closestDistance = distance;
                 TargetEnemy = collider.gameObject;
             }
         }
 
-        //just in if TargetEnemy == null is simple but standardObject is must always be used, so use
-        if (activeSearch)
-            return TargetEnemy;
-        else
-            return standardObject;
+        return TargetEnemy;
     }
 
+    //시작과 타겟에 번개 이펙트를 여러변 그려주는 코루틴
     public IEnumerator LightningEffect()
     {
         if (startObject == null || targetObject == null) 
@@ -150,6 +147,7 @@ public class ChainLightning : MonoBehaviour
         }
     }
 
+    //번개 이펙트 , 선이 랜덤으로 지그재그 형태를 띤다.
     public void DrawLightning(Vector2 source, Vector2 target, int segments)
     {
         lineRenderer.positionCount = segments;

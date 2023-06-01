@@ -12,8 +12,6 @@ public class Pathfinder : MonoBehaviour
     private float currentTime;
     private TrailRenderer trailRenderer;
 
-    [SerializeField]
-    private GameObject boo;
     // Start is called before the first frame update
     void Start()
     {

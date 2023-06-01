@@ -69,7 +69,10 @@ public class EnemyHp : MonoBehaviour
 
     private void OnDestroy()
     {
-        Destroy(enemyHpViewer.gameObject);
+        if (enemyHpViewer != null)
+        {
+            Destroy(enemyHpViewer.gameObject);
+        }
     }
 }
 

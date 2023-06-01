@@ -22,6 +22,8 @@ public class MapDirector : MonoBehaviour
     private EnemySpawner enemySpawner;
     [SerializeField]
     private Pathfinder showPath;
+    [SerializeField]
+    private TextFadeOut warnintMessage;
 
     private Tile GoalTile;
     private AStarNode GoalNode;
@@ -41,7 +43,7 @@ public class MapDirector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartToEndPath = new List<AStarNode>();
     }
 
     // Update is called once per frame
@@ -51,6 +53,7 @@ public class MapDirector : MonoBehaviour
         {
             if (enemySpawner.enemyList.Count > 0)
             {
+                //warnintMessage.ShowText("Wall cannot be placed when there are enemies", 3f);
                 Debug.Log("적이 있을 때는 벽 설치 불가");
                 return;
             }
@@ -61,11 +64,10 @@ public class MapDirector : MonoBehaviour
             }
 
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
             Vector2 raycasyPoint = worldPos;
-            //RaycastHit2D hit = Physics2D.Raycast(raycasyPoint, Vector2.zero);
             RaycastHit2D hit = Physics2D.Raycast(raycasyPoint, Vector2.zero, Mathf.Infinity, LayerMask.GetMask("Tile"));
 
+            //마우스 위치가 맵 바깥이 아니고 벽이 안 설치 되있는 맵
             if (hit.transform == null || !hit.transform.CompareTag("WalkableMap"))
             {
                 Debug.Log("필드 안에 설치해야됩니다.");
@@ -81,20 +83,6 @@ public class MapDirector : MonoBehaviour
                 Wall.isWalkable = true;
                 return;
             }
-
-            //null 체크와 WalkableMap에서 있는지 체크를 했기 때문에 필요가 없다.
-/*            if (WallMap.HasTile(cellPosition))
-            {
-                return;
-            }
-            else if (NonWallMap.HasTile(cellPosition))
-            {
-                return;
-            }
-            else if (!WalkableMap.HasTile(cellPosition))
-            {
-                return;
-            }*/
 
             WallMap.SetTile(cellPosition, WallTile);
             WalkableMap.SetTile(cellPosition, null);
@@ -158,7 +146,6 @@ public class MapDirector : MonoBehaviour
         AStarNode StartNode = aStarGrid.GetNodeFromWorld(StartPosition.position);
         AStarNode EndNode = aStarGrid.GetNodeFromWorld(goal.transform.position);
 
-        StartToEndPath = new List<AStarNode>();
         //StartToEndPath = new List<AStarNode>(AStarGrid_.pathfinder.CreatePath(StartNode, EndNode));
 
         StartToEndPath = aStarGrid.pathfinder.CreatePath(StartNode, EndNode);

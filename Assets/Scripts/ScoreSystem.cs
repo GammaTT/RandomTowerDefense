@@ -8,7 +8,7 @@ using TMPro;
 public class ScoreSystem
 {
     private List<int> scoreData = new();
-    private int showScoreCount = 8;
+    //private int showScoreCount = 8;
     public int currentScore;
 
     string path = Path.Combine(Application.dataPath, "Resources/Score.json");

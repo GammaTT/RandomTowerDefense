@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    bool gameover = false;
     public int gold;
     public int maxHp;
     private int _currentHp;
+    private SceneDirector sceneDirector;
     public int currentHp
     {
         get { return _currentHp; }
@@ -34,7 +36,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        sceneDirector = GetComponent<SceneDirector>();
     }
 
     // Update is called once per frame
@@ -50,14 +52,19 @@ public class Player : MonoBehaviour
         StopCoroutine("HitAnimation");
         StartCoroutine("HitAnimation");
 
-        if (currentHp <= 0)
+        if (currentHp <= 0 && !gameover)
         {
+            gameover = true;
             //holy moly wtf game over damn it
             waveSystem.FinishGame();
+            Invoke("GameOverScene", 3f);
         }
     }
 
-
+    public void GameOverScene()
+    {
+        sceneDirector.OpeningScene();
+    }
     private IEnumerator HitAnimation()
     {
         //이 이미지 UI는 화면 전체를 덥기 때문에 RayCastTarget을 꺼주자

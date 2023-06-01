@@ -13,7 +13,7 @@ public class TextFadeOut : MonoBehaviour
 
     public void ShowText(string text, float duration)
     {
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
         showText.text = text;
         fadeDuration = duration;
         StartCoroutine("FadeOutCoroutine");
@@ -31,6 +31,6 @@ public class TextFadeOut : MonoBehaviour
             yield return null;
         }
 
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 }

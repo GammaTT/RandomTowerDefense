@@ -78,7 +78,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 1.2
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -265,7 +265,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08aa4f59fa2179b4986c82ce029dde85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerSpawner: {fileID: 0}
   RotateSpeed: 0.1
 --- !u!114 &3084227731996547669
 MonoBehaviour:
@@ -287,14 +286,17 @@ MonoBehaviour:
   projectilePrefab: {fileID: 3988982820199238153, guid: 217811d62615ae048819a02cb332d94e, type: 3}
   bombPrefab: {fileID: 0}
   lineRenderer: {fileID: 0}
+  lineRenderer2: {fileID: 0}
+  lineRenderer3: {fileID: 0}
   weaponState: 0
   towerGrade: 2
   level: 0
-  grade: 2
   upGradeGold: 0
+  useGoldToUpGrade: 0
   damage: 0
   range: 0
   rate: 0
+  slowValue: 0
 --- !u!114 &3472812604892524593
 MonoBehaviour:
   m_ObjectHideFlags: 0

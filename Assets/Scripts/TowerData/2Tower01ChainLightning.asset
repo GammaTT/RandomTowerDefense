@@ -16,9 +16,10 @@ MonoBehaviour:
   followTowerPrefab: {fileID: 0}
   weapon:
     damage: 4
-    rate: 2
+    rate: 1.5
     range: 3
     sell: 0
+    doubleShot: 0
     slowValue: 0
   weaponUpGradeValue:
     damage: 1.3

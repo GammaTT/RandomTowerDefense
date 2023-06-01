@@ -78,9 +78,7 @@ public class PanelTowerDataViewer : MonoBehaviour
         }
 
         textUpGradeGold.text = "UpGrade : " + currentTowerWeapon.upGradeGold + " Gold";
-        //textLevel.text = "Level : " + currentTower.Level;
-        //textUpgradeCost.text = currentTower.UpgradeCost.ToString();
-        //textSellCost.text = currentTower.SellCost.ToString();
+
     }
 
     public void UpGradeTowerButton()
