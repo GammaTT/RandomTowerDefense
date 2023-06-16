@@ -11,9 +11,9 @@ public class TextFadeOut : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI showText;
 
+
     public void ShowText(string text, float duration)
     {
-        //gameObject.SetActive(true);
         showText.text = text;
         fadeDuration = duration;
         StartCoroutine("FadeOutCoroutine");

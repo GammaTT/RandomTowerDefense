@@ -78,7 +78,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: layers.Array.data[8]
-    value: 
+    value: NonRayLayer
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: layers.Array.data[9]

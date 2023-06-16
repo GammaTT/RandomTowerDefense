@@ -51,7 +51,6 @@ public class AStarPathfind
             // 목적지 도착
             if (currentNode == endNode)
             {
-                //Debug.Log("finished");
                 // 경로만들어서 반환
                 List<AStarNode> path = new List<AStarNode>();
                 path.Add(endNode);

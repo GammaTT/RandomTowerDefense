@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5753156065166194001}
   - component: {fileID: 8179807258283201907}
   - component: {fileID: 2018844475960965494}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Circle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -311,7 +311,7 @@ GameObject:
   - component: {fileID: 4154148040716204015}
   - component: {fileID: 4294829874404437557}
   - component: {fileID: 57873529338735890}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Circle (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -557,7 +557,7 @@ GameObject:
   - component: {fileID: 6183235083622283683}
   - component: {fileID: 4322867030845172785}
   - component: {fileID: 6221550054604276404}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -672,7 +672,7 @@ GameObject:
   - component: {fileID: 1349604864830933885}
   - component: {fileID: 2411250941172780874}
   - component: {fileID: 6918576469827944250}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Circle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

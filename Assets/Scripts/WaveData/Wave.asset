@@ -70,11 +70,11 @@ MonoBehaviour:
     - enemyPrefab: {fileID: 5995945161616379720, guid: 344d27fe809501e479291516e6d1881b, type: 3}
       enemyPercentage: 0
     - enemyPrefab: {fileID: 5995945161616379720, guid: 903b56849fb45b54d83e66aa7f46f956, type: 3}
-      enemyPercentage: 0.106453426
+      enemyPercentage: 0.18435897
     - enemyPrefab: {fileID: 5995945161616379720, guid: 431ae956a70628444917993ff69eadae, type: 3}
-      enemyPercentage: 0.5928426
+      enemyPercentage: 0.55778146
     - enemyPrefab: {fileID: 5995945161616379720, guid: c3de3d3c80a673441aae9390afe57589, type: 3}
-      enemyPercentage: 0.30070403
+      enemyPercentage: 0.25785962
   - spawnDelay: 1
     maxEnemyCount: 25
     enemies:

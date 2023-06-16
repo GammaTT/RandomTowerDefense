@@ -58,7 +58,7 @@ public class WaveSystem : MonoBehaviour
             StartGame();
             int currentWave = currentWaveIndex + 1;
 
-            textFadeOut.ShowText("Wave : " + currentWave, 1f);
+            //textFadeOut.ShowText("Wave : " + currentWave, 1f);
 
             //현재 웨이브의 정보 에너미 스포너에 넘겨줌
             enemySpawner.StartWave(waveData.waves[currentWaveIndex]);

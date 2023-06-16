@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
@@ -66,34 +67,45 @@ public class AStarGrid
         walkableMap.CompressBounds();
         BoundsInt bounds = walkableMap.cellBounds;
         grid = new AStarNode[bounds.size.y, bounds.size.x];
+
+        Debug.Log(bounds.size);
+        Debug.Log(bounds.yMin);
+        Debug.Log(bounds.xMin);
+
         for (int y = bounds.yMin, i = 0; i < bounds.size.y; y++, i++)
         {
             for (int x = bounds.xMin, j = 0; j < bounds.size.x; x++, j++)
             {
                 AStarNode node = new AStarNode();
+                Vector3 cell = walkableMap.CellToWorld(new Vector3Int(x, y));
+
+                node.xPos = cell.x;
+                node.yPos = cell.y;
+
                 node.yIndex = i;
                 node.xIndex = j;
                 node.gCost = int.MaxValue;
-                node.parent = null;
-                node.yPos = walkableMap.CellToWorld(new Vector3Int(x, y)).y;
-                node.xPos = walkableMap.CellToWorld(new Vector3Int(x, y)).x;
+
                 // walkable Tilemap에 타일이 있으면 이동 가능한 노드, 타일이 없으면 이동 불가능한 노드이다.
-                if (walkableMap.HasTile(new Vector3Int(x, y, 0)))
+                if (walkableMap.HasTile(new Vector3Int(x, y)))
                 {
                     node.isWalkable = true;
-                    grid[i, j] = node;
-                }
-                else if (wallmap.HasTile(new Vector3Int(x, y, 0)))
-                {
-                    node.isWalkable = false;
-                    grid[i, j] = node;
                 }
                 else
                 {
-                    // walkableMap, wallMap 둘 다 타일이 없으면 이동 가능한 노드가 아님
                     node.isWalkable = false;
-                    grid[i, j] = node;
                 }
+
+                grid[i, j] = node;
+                /*                else if (wallmap.HasTile(new Vector3Int(x, y)))
+                                {
+                                    node.isWalkable = false;
+                                }
+                                else
+                                {
+                                    node.isWalkable = false;
+                                }*/
+                // walkableMap, wallMap 둘 다 타일이 없으면 이동 가능한 노드가 아님
             }
         }
     }

@@ -60,6 +60,7 @@ public class EnemySpawner : MonoBehaviour
             float randomSpawnRoll = Random.value;
             GameObject selectEnemy = null;
 
+            //정해놓은 확률을 기반으로 랜덤하게 하나의 enemy를 선택한다.
             foreach(var enemyInWave in currentWave.enemies)
             {
                 if (randomSpawnRoll <= enemyInWave.enemyPercentage)

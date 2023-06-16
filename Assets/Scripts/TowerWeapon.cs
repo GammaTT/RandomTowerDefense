@@ -116,12 +116,6 @@ public class TowerWeapon : MonoBehaviour
         }
     }
     // Update is called once per frame
-    void Update()
-    {
-
-    }
-    //임시 스크립터블인데 되는지 수정중
-    //어떻게 할까..
 
     public bool UPGrade()
     {

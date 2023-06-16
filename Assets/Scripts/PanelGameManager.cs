@@ -52,7 +52,9 @@ public class PanelGameManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && activeSomeThingButton)
         {
-            hit = Physics2D.Raycast(MousePosition, Vector2.zero);
+            //슬로우 타워의 이펙트 등 에 막혀서 클릭이 안됄수도 있음
+            int layerMask = ~(1 << LayerMask.NameToLayer("NonRayLayer"));
+            hit = Physics2D.Raycast(MousePosition, Vector2.zero, Mathf.Infinity, layerMask);
 
             //1레벨 타워 랜덤 생성
             if (isTowerSpawnMode)

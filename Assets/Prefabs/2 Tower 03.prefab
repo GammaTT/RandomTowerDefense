@@ -154,6 +154,8 @@ MonoBehaviour:
   projectilePrefab: {fileID: 0}
   bombPrefab: {fileID: 0}
   lineRenderer: {fileID: 0}
+  lineRenderer2: {fileID: 0}
+  lineRenderer3: {fileID: 0}
   weaponState: 0
   towerGrade: 2
   level: 0
@@ -162,6 +164,7 @@ MonoBehaviour:
   damage: 0
   range: 0
   rate: 0
+  slowValue: 0
 --- !u!58 &3084227731996547670
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -219,7 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5449411484167052526}
   - component: {fileID: 5449411484167052527}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +308,7 @@ GameObject:
   - component: {fileID: 5449411484234231705}
   - component: {fileID: 7630228017481545417}
   - component: {fileID: 8566545782377062509}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlowRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}

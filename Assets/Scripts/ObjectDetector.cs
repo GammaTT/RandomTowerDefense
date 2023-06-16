@@ -35,6 +35,7 @@ public class ObjectDetector : MonoBehaviour
         //UI 클릭하고 있을때는 굳이 표시해줄 데이터는 없다.
         if (EventSystem.current.IsPointerOverGameObject() == true)
         {
+            //Debug.Log("UI");
             return;
         }
 
@@ -55,7 +56,6 @@ public class ObjectDetector : MonoBehaviour
             if (hit.transform.CompareTag("Tower"))
             {
                 TowerWeapon towerWeapon = hit.transform.GetComponent<TowerWeapon>();
-                //Debug.Log("Tower");
                 towerAttackRange.gameObject.SetActive(true);
                 towerAttackRange.OnAttackRange(hit.transform.position, towerWeapon.range);
                 towerDataViewer.OnPanel(hit.transform);

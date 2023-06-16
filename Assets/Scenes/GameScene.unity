@@ -4356,7 +4356,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1193094690
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4364,7 +4364,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1193094689}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4820,7 +4820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5796efed97231894ea85abcdb15e0311, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testTowerOn: 1
+  testTowerOn: 0
   player: {fileID: 1533486789}
   towerData:
   - {fileID: 11400000, guid: e77b966bf59282c44ac56f57de87d4f7, type: 2}
@@ -4840,7 +4840,7 @@ MonoBehaviour:
   - {fileID: 3084227731996547674, guid: 00427dcedf9c92c42b0c3468ca22838b, type: 3}
   towerGrade4Prefabs:
   - {fileID: 3084227731996547674, guid: 01fe2050013f5b640b867cfbf051e252, type: 3}
-  TestTower: {fileID: 3084227731996547674, guid: 3b00b19a4bf5f154fa62eabaeea54cab, type: 3}
+  TestTower: {fileID: 3084227731996547674, guid: f54378f3af9403944bb6582881385e31, type: 3}
   WallMap: {fileID: 281580768}
 --- !u!1 &1425653930
 GameObject:

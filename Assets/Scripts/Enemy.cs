@@ -88,7 +88,7 @@ public class Enemy : MonoBehaviour
     {
         foreach (var node in enemyPath)
         {
-            //벽을 설치할때 첫번째 노드(타일)에서 버벅거리기 때문에 다음 반복으로 넘어가기
+            //실시간 벽 설치 가능시 노드 버벅거리는 현상 방지
             if (node == enemyPath[0])
             {
                 continue;
@@ -98,6 +98,7 @@ public class Enemy : MonoBehaviour
             Vector2 currentPosition = transform.position;
             currentTime = Time.time;
 
+            //이 반복문은 다음 노드로 가는 반복문이다 nextNodeMoveTime에 의해서 조절된다.
             while (true)
             {
                 Vector3 move = (targetPositon - currentPosition).normalized * Time.deltaTime;
@@ -114,41 +115,7 @@ public class Enemy : MonoBehaviour
 
                 yield return new WaitForEndOfFrame();
             }
-
         }
-
-        //원래 이동했던 방법. 패스 파인더와 같게 하기 위해 바꿈
-        /*
-        for (int i = 1; i < EnemyPath.Count; i++)
-        {
-            var node = EnemyPath[i];
-            Vector2 targetPositon = new Vector2(node.xPos, node.yPos);
-            Vector2 currentPosition = transform.position;
-
-            float xDiff = targetPositon.x - currentPosition.x;
-            float yDiff = targetPositon.y - currentPosition.y;
-
-            Vector2 moveDirection = Vector2.zero;
-
-            if (Mathf.Abs(xDiff) > Mathf.Abs(yDiff))
-            {
-                moveDirection = new Vector2(Mathf.Sign(xDiff), 0);
-            }
-            else
-            {
-                moveDirection = new Vector2(0, Mathf.Sign(yDiff));
-            }
-
-            Vector2 targetCenter = targetPositon + moveDirection * 0.5f;
-
-            while (Vector2.Distance(transform.position, targetCenter) > 0.1f)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, targetCenter, 1f * Time.deltaTime * MoveSpeed);
-                yield return null;
-            }
-
-            transform.position = targetCenter;
-        }*/
     }
 
     //movespeed 에 비례해 다음 노드(타일)로 이동하는 시간이 있기에

@@ -51,13 +51,13 @@ public class MapDirector : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (enemySpawner.enemyList.Count > 0)
+/*            if (enemySpawner.enemyList.Count > 0)
             {
                 //warnintMessage.ShowText("Wall cannot be placed when there are enemies", 3f);
                 Debug.Log("적이 있을 때는 벽 설치 불가");
                 return;
-            }
-            else if (player.gold < Constants.spawnWallGold)
+            }*/
+            if (player.gold < Constants.spawnWallGold) //else if
             {
                 Debug.Log("벽을 지을 골드가 부족합니다.");
                 return;
@@ -142,14 +142,13 @@ public class MapDirector : MonoBehaviour
     }
     public List<AStarNode> SetPathFromPosition(Transform StartPosition)
     {
-
         AStarNode StartNode = aStarGrid.GetNodeFromWorld(StartPosition.position);
         AStarNode EndNode = aStarGrid.GetNodeFromWorld(goal.transform.position);
 
-        //StartToEndPath = new List<AStarNode>(AStarGrid_.pathfinder.CreatePath(StartNode, EndNode));
-
+        //노드를 기반, A* 알고리즘 경로 찾기 . 
         StartToEndPath = aStarGrid.pathfinder.CreatePath(StartNode, EndNode);
-
+        
+        //노드 기반의 경로이기 때문에 그 노드가 해당되는 타일의 중앙으로 경로 다듬기
         for (int i = 0; i < StartToEndPath.Count; i++)
         {
             Vector3Int NodePosition = WalkableMap.WorldToCell(new Vector3(StartToEndPath[i].xPos, StartToEndPath[i].yPos));
@@ -159,7 +158,7 @@ public class MapDirector : MonoBehaviour
             StartToEndPath[i].xPos = CenterPosition.x;
             StartToEndPath[i].yPos = CenterPosition.y;
         }
- 
+
         return StartToEndPath;
     }
 
